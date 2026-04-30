@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google Form Results Database Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --blue: #102a54;
+      --blue2: #173b72;
+      --gold: #d6a93a;
+      --red: #8d2f2f;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --line: #e5eaf2;
+      --green: #1f7a4d;
+      --shadow: 0 10px 28px rgba(16, 42, 84, 0.11);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(214,169,58,0.18), transparent 28%),
+        linear-gradient(135deg, #f6f9ff 0%, #edf2fa 100%);
+      color: var(--text);
+    }
+
+    .app {
+      width: min(1500px, 96%);
+      margin: 0 auto;
+      padding: 22px 0 50px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 240px;
+      height: 240px;
+      background: rgba(214,169,58,0.22);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-badge {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.5vw, 2.25rem);
+      line-height: 1.12;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      margin: 7px 0 0;
+      color: rgba(255,255,255,0.82);
+      font-size: 0.96rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      background: #4ade80;
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgba(74,222,128,0.18);
+    }
+
+    .toolbar {
+      margin: 18px 0;
+      background: rgba(255,255,255,0.84);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+    }
+
+    .input, select, button {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 13px;
+      font-size: 0.95rem;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    .input:focus, select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(214,169,58,0.16);
+    }
+
+    button {
+      cursor: pointer;
+      background: var(--blue);
+      color: white;
+      border: none;
+      font-weight: 700;
+      transition: 0.18s ease;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #0b2042;
+    }
+
+    .secondary {
+      background: white;
+      color: var(--blue);
+      border: 1px solid var(--line);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .kpis {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .kpi {
+      min-height: 130px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi::after {
+      content: "";
+      position: absolute;
+      right: -38px;
+      bottom: -38px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(214,169,58,0.15);
+    }
+
+    .kpi-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: #f1f5fb;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .kpi-note {
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-top: 8px;
+    }
+
+    .section-title {
+      margin: 28px 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      color: var(--blue);
+      font-size: 1.28rem;
+    }
+
+    .section-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .charts {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .chart-card {
+      min-height: 380px;
+    }
+
+    .chart-wrap {
+      height: 300px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .summary-card {
+      border-left: 5px solid var(--gold);
+      min-height: 150px;
+    }
+
+    .summary-head {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .summary-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: #f7f0dc;
+      font-size: 20px;
+    }
+
+    .summary-title {
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .summary-text {
+      color: #344054;
+      line-height: 1.45;
+      font-size: 0.94rem;
+    }
+
+    .details-hint {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-style: italic;
+    }
+
+    .table-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 620px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+      font-size: 0.9rem;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #f7f9fc;
+      color: var(--blue);
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+      font-weight: 800;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      color: #344054;
+    }
+
+    tr:hover td {
+      background: #fbfdff;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #eef4ff;
+      color: var(--blue);
+      border: 1px solid #d8e6ff;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px;
+    }
+
+    .mobile-note {
+      display: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 42, 84, 0.42);
+      z-index: 100;
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .modal.show {
+      display: grid;
+      place-items: center;
+    }
+
+    .modal-box {
+      width: min(900px, 100%);
+      background: white;
+      border-radius: 22px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.22);
+      overflow: hidden;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-head {
+      padding: 16px 18px;
+      background: var(--blue);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .close {
+      width: auto;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .modal-body {
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .detail-row {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-row strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 5px;
+    }
+
+    .footer {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 1050px) {
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .charts {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .app {
+        width: 94%;
+        padding-top: 12px;
+      }
+
+      .hero {
+        padding: 18px;
+        border-radius: 20px;
+      }
+
+      .title-wrap {
+        align-items: flex-start;
+      }
+
+      .logo-badge {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+      }
+
+      .toolbar {
+        position: static;
+        grid-template-columns: 1fr;
+      }
+
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      .chart-card {
+        min-height: 330px;
+      }
+
+      .chart-wrap {
+        height: 260px;
+      }
+
+      .mobile-note {
+        display: block;
+      }
+
+      table {
+        min-width: 850px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="title-wrap">
+          <div class="logo-badge">📊</div>
+          <div>
+            <h1>Google Form Results Database Dashboard</h1>
+            <p class="subtitle">Real-time database view, analysis, comments summary, and response monitoring from Google Sheets.</p>
+          </div>
+        </div>
+
+        <div class="status-pill">
+          <span class="dot"></span>
+          <span id="connectionStatus">Checking connection...</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <input id="searchInput" class="input" type="search" placeholder="Search responses, institution, region, comments..." />
+
+      <select id="filterOne">
+        <option value="">All Regions / Main Filter</option>
+      </select>
+
+      <select id="filterTwo">
+        <option value="">All Institutions / Secondary Filter</option>
+      </select>
+
+      <select id="filterThree">
+        <option value="">All Categories / Third Filter</option>
+      </select>
+
+      <button onclick="refreshData()">Refresh</button>
+    </section>
+
+    <section class="grid kpis">
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Total Responses</div>
+          <div class="kpi-value" id="totalResponses">0</div>
+          <div class="kpi-note">Based on submitted Google Form entries</div>
+        </div>
+        <div class="kpi-icon">📝</div>
+      </div>
+
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Unique Institutions</div>
+          <div class="kpi-value" id="uniqueInstitutions">0</div>
+          <div class="kpi-note">Detected from institution-related column</div>
+        </div>
+        <div class="kpi-icon">🏫</div>
+      </div>
+
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Unique Regions</div>
+          <div class="kpi-value" id="uniqueRegions">0</div>
+          <div class="kpi-note">Detected from region-related column</div>
+        </div>
+        <div class="kpi-icon">🗺️</div>
+      </div>
+
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Last Updated</div>
+          <div class="kpi-value" id="lastUpdated" style="font-size:1.1rem;">--</div>
+          <div class="kpi-note">Auto-read from Apps Script API</div>
+        </div>
+        <div class="kpi-icon">⏱️</div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <div>
+        <h2>Visual Overview</h2>
+        <p>Charts automatically adjust based on available columns and selected filters.</p>
+      </div>
+    </div>
+
+    <section class="grid charts">
+      <div class="card chart-card">
+        <div class="section-title" style="margin-top:0;">
+          <div>
+            <h2 id="chartOneTitle">Responses by Region</h2>
+            <p>Distribution of responses based on the main location/category column.</p>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartOne"></canvas>
+        </div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="section-title" style="margin-top:0;">
+          <div>
+            <h2 id="chartTwoTitle">Responses by Institution</h2>
+            <p>Top entries based on the institution or secondary category column.</p>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartTwo"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <div>
+        <h2>Comment and Recommendation Summaries</h2>
+        <p>Displayed by row per category, readable from left to right for web and mobile users.</p>
+      </div>
+    </div>
+
+    <section id="summaryGrid" class="summary-grid"></section>
+
+    <div class="section-title">
+      <div>
+        <h2>Database Records</h2>
+        <p>Searchable, filterable, and clickable list of Google Form responses.</p>
+        <div class="mobile-note">Mobile users may scroll horizontally inside the table.</div>
+      </div>
+
+      <button class="secondary" onclick="exportCSV()">Export CSV</button>
+    </div>
+
+    <section class="card table-card">
+      <div class="table-header">
+        <strong id="tableCount">Showing 0 records</strong>
+        <span class="badge" id="activeFilterBadge">No active filter</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="footer">
+      Google Form Results Database Dashboard · Powered by Google Sheets, Apps Script, and GitHub Pages
+    </div>
+  </div>
+
+  <div id="detailsModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Response Details</h3>
+        <button class="close" onclick="closeModal()">Close</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    /************************************************
+     * YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
+     ************************************************/
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjQ8P7Zi107X5JJ3KsdShedm0j_jhw0tKxBXBEzyHrufsHmhr8u-N1tcwX-gmO43lItQ/exec';
+
+    /************************************************
+     * DASHBOARD SETTINGS
+     ************************************************/
+
+    const preferredColumnNames = {
+      timestamp: ['timestamp', 'time submitted', 'date submitted', 'submission date'],
+      region: ['region', 'regional office', 'ched regional office', 'ro'],
+      institution: ['institution', 'hei', 'higher education institution', 'name of institution', 'school'],
+      category: ['category', 'program', 'discipline', 'course', 'classification', 'type']
+    };
+
+    const commentCategories = [
+      {
+        title: 'Curriculum Outcomes',
+        icon: '🎯',
+        keywords: ['curriculum outcome', 'curriculum outcomes', 'outcome']
+      },
+      {
+        title: 'Unit Reduction',
+        icon: '📉',
+        keywords: ['unit reduction', 'units', 'unit']
+      },
+      {
+        title: 'General Education Courses',
+        icon: '📚',
+        keywords: ['general education courses', 'ge courses', 'general education', 'ge course']
+      },
+      {
+        title: 'Faculty Qualifications',
+        icon: '👩‍🏫',
+        keywords: ['faculty qualification', 'faculty qualifications', 'faculty']
+      },
+      {
+        title: 'Quality Assurance Process',
+        icon: '✅',
+        keywords: ['quality assurance', 'qa process', 'qa']
+      },
+      {
+        title: 'General Comments',
+        icon: '💬',
+        keywords: ['general comment', 'comments', 'comment']
+      },
+      {
+        title: 'Other Recommendations',
+        icon: '💡',
+        keywords: ['recommendation', 'recommendations', 'other recommendation']
+      }
+    ];
+
+    let rawData = [];
+    let filteredData = [];
+    let headers = [];
+    let detected = {};
+    let chartOneInstance = null;
+    let chartTwoInstance = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupEvents();
+      testConnection();
+      refreshData();
+    });
+
+    function setupEvents() {
+      document.getElementById('searchInput').addEventListener('input', applyFilters);
+      document.getElementById('filterOne').addEventListener('change', applyFilters);
+      document.getElementById('filterTwo').addEventListener('change', applyFilters);
+      document.getElementById('filterThree').addEventListener('change', applyFilters);
+
+      document.getElementById('detailsModal').addEventListener('click', function(e) {
+        if (e.target.id === 'detailsModal') {
+          closeModal();
+        }
+      });
+    }
+
+    function jsonp(url) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'jsonpCallback_' + Math.random().toString(36).substring(2);
+        const script = document.createElement('script');
+
+        window[callbackName] = function(data) {
+          resolve(data);
+          delete window[callbackName];
+          script.remove();
+        };
+
+        script.onerror = function() {
+          reject(new Error('Unable to connect to Apps Script API.'));
+          delete window[callbackName];
+          script.remove();
+        };
+
+        const separator = url.includes('?') ? '&' : '?';
+        script.src = `${url}${separator}callback=${callbackName}&_=${Date.now()}`;
+        document.body.appendChild(script);
+      });
+    }
+
+    async function testConnection() {
+      const status = document.getElementById('connectionStatus');
+
+      try {
+        const data = await jsonp(`${APPS_SCRIPT_URL}?action=ping`);
+
+        if (data.ok) {
+          status.textContent = 'Connected to Google Sheets';
+        } else {
+          status.textContent = 'Connection error';
+        }
+      } catch (error) {
+        status.textContent = 'Not connected';
+      }
+    }
+
+    async function refreshData() {
+      const status = document.getElementById('connectionStatus');
+      status.textContent = 'Loading data...';
+
+      try {
+        const response = await jsonp(`${APPS_SCRIPT_URL}?action=records`);
+
+        if (!response.ok) {
+          throw new Error(response.error || 'Unable to load data.');
+        }
+
+        rawData = response.records || [];
+        headers = response.headers || [];
+
+        detected = detectColumns(headers);
+
+        filteredData = [...rawData];
+
+        populateFilters();
+        applyFilters();
+
+        document.getElementById('lastUpdated').textContent = formatDateTime(response.updatedAt);
+        status.textContent = 'Connected to Google Sheets';
+
+      } catch (error) {
+        console.error(error);
+        status.textContent = 'Connection failed';
+        document.getElementById('tableBody').innerHTML = `
+          <tr>
+            <td class="empty" colspan="10">
+              ${escapeHTML(error.message)}
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function detectColumns(cols) {
+      const result = {};
+
+      Object.keys(preferredColumnNames).forEach(key => {
+        result[key] = findColumn(cols, preferredColumnNames[key]);
+      });
+
+      if (!result.region) result.region = cols[1] || cols[0] || '';
+      if (!result.institution) result.institution = cols[2] || cols[1] || '';
+      if (!result.category) result.category = cols[3] || cols[2] || '';
+
+      return result;
+    }
+
+    function findColumn(cols, terms) {
+      const lowerCols = cols.map(c => String(c).toLowerCase());
+
+      for (const term of terms) {
+        const exactIndex = lowerCols.findIndex(c => c === term.toLowerCase());
+        if (exactIndex >= 0) return cols[exactIndex];
+      }
+
+      for (const term of terms) {
+        const partialIndex = lowerCols.findIndex(c => c.includes(term.toLowerCase()));
+        if (partialIndex >= 0) return cols[partialIndex];
+      }
+
+      return '';
+    }
+
+    function populateFilters() {
+      populateSelect('filterOne', rawData, detected.region, 'All Regions / Main Filter');
+      populateSelect('filterTwo', rawData, detected.institution, 'All Institutions / Secondary Filter');
+      populateSelect('filterThree', rawData, detected.category, 'All Categories / Third Filter');
+    }
+
+    function populateSelect(id, data, column, defaultText) {
+      const select = document.getElementById(id);
+      select.innerHTML = `<option value="">${defaultText}</option>`;
+
+      if (!column) return;
+
+      const values = [...new Set(data.map(row => cleanValue(row[column])).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b));
+
+      values.forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+      });
+    }
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const f1 = document.getElementById('filterOne').value;
+      const f2 = document.getElementById('filterTwo').value;
+      const f3 = document.getElementById('filterThree').value;
+
+      filteredData = rawData.filter(row => {
+        const searchable = Object.values(row).join(' ').toLowerCase();
+
+        const matchesSearch = !search || searchable.includes(search);
+        const matchesF1 = !f1 || cleanValue(row[detected.region]) === f1;
+        const matchesF2 = !f2 || cleanValue(row[detected.institution]) === f2;
+        const matchesF3 = !f3 || cleanValue(row[detected.category]) === f3;
+
+        return matchesSearch && matchesF1 && matchesF2 && matchesF3;
+      });
+
+      updateKPIs();
+      renderCharts();
+      renderSummaries();
+      renderTable();
+      updateFilterBadge();
+    }
+
+    function updateKPIs() {
+      document.getElementById('totalResponses').textContent = filteredData.length.toLocaleString();
+
+      const institutions = uniqueCount(filteredData, detected.institution);
+      const regions = uniqueCount(filteredData, detected.region);
+
+      document.getElementById('uniqueInstitutions').textContent = institutions.toLocaleString();
+      document.getElementById('uniqueRegions').textContent = regions.toLocaleString();
+    }
+
+    function uniqueCount(data, column) {
+      if (!column) return 0;
+      return new Set(data.map(row => cleanValue(row[column])).filter(Boolean)).size;
+    }
+
+    function renderCharts() {
+      const chartOneCol = detected.region;
+      const chartTwoCol = detected.institution;
+
+      document.getElementById('chartOneTitle').textContent = chartOneCol ? `Responses by ${chartOneCol}` : 'Responses by Main Category';
+      document.getElementById('chartTwoTitle').textContent = chartTwoCol ? `Top ${chartTwoCol}` : 'Top Secondary Category';
+
+      const oneData = countByColumn(filteredData, chartOneCol, 15);
+      const twoData = countByColumn(filteredData, chartTwoCol, 10);
+
+      chartOneInstance = createOrUpdateChart(
+        chartOneInstance,
+        'chartOne',
+        'bar',
+        oneData.labels,
+        oneData.values,
+        'Responses'
+      );
+
+      chartTwoInstance = createOrUpdateChart(
+        chartTwoInstance,
+        'chartTwo',
+        'doughnut',
+        twoData.labels,
+        twoData.values,
+        'Responses'
+      );
+    }
+
+    function countByColumn(data, column, limit = 10) {
+      const counts = {};
+
+      if (!column) {
+        return { labels: ['No column detected'], values: [0] };
+      }
+
+      data.forEach(row => {
+        const value = cleanValue(row[column]) || 'Not Specified';
+        counts[value] = (counts[value] || 0) + 1;
+      });
+
+      const sorted = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, limit);
+
+      return {
+        labels: sorted.map(item => item[0]),
+        values: sorted.map(item => item[1])
+      };
+    }
+
+    function createOrUpdateChart(instance, canvasId, type, labels, values, label) {
+      const ctx = document.getElementById(canvasId);
+
+      if (instance) {
+        instance.destroy();
+      }
+
+      return new Chart(ctx, {
+        type,
+        data: {
+          labels,
+          datasets: [{
+            label,
+            data: values,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: type === 'doughnut',
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const value = context.raw;
+                  const percent = total ? ((value / total) * 100).toFixed(1) : 0;
+                  return ` ${value} response/s (${percent}%)`;
+                }
+              }
+            }
+          },
+          scales: type === 'bar' ? {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          } : {}
+        }
+      });
+    }
+
+    function renderSummaries() {
+      const container = document.getElementById('summaryGrid');
+      container.innerHTML = '';
+
+      commentCategories.forEach(category => {
+        const matchedColumns = findCommentColumns(category.keywords);
+
+        let comments = [];
+
+        matchedColumns.forEach(col => {
+          filteredData.forEach(row => {
+            const text = cleanValue(row[col]);
+            if (text && text.length > 2) {
+              comments.push(text);
+            }
+          });
+        });
+
+        comments = [...new Set(comments)];
+
+        const summary = summarizeComments(comments, category.title);
+
+        const div = document.createElement('div');
+        div.className = 'card summary-card';
+        div.innerHTML = `
+          <div class="summary-head">
+            <div class="summary-icon">${category.icon}</div>
+            <div>
+              <div class="summary-title">${escapeHTML(category.title)}</div>
+              <small style="color:var(--muted);">${comments.length} related comment/s found</small>
+            </div>
+          </div>
+          <div class="summary-text">${escapeHTML(summary)}</div>
+          <span class="details-hint" onclick="openCommentDetails('${escapeJS(category.title)}')" style="cursor:pointer;">
+            Click to view details.
+          </span>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    function findCommentColumns(keywords) {
+      const lowerHeaders = headers.map(h => String(h).toLowerCase());
+
+      return headers.filter((header, index) => {
+        const h = lowerHeaders[index];
+
+        const hasKeyword = keywords.some(k => h.includes(k.toLowerCase()));
+        const isCommentLike =
+          h.includes('comment') ||
+          h.includes('recommendation') ||
+          h.includes('remarks') ||
+          h.includes('suggestion') ||
+          h.includes('feedback');
+
+        return hasKeyword && isCommentLike;
+      });
+    }
+
+    function summarizeComments(comments, title) {
+      if (!comments.length) {
+        return `No available comments were detected for ${title} based on the current filtered responses.`;
+      }
+
+      const combined = comments.join(' ').toLowerCase();
+
+      const positiveWords = ['good', 'agree', 'relevant', 'clear', 'helpful', 'appropriate', 'excellent', 'support'];
+      const concernWords = ['concern', 'unclear', 'difficult', 'reduce', 'issue', 'problem', 'lack', 'revise', 'improve'];
+
+      const positiveHits = positiveWords.filter(word => combined.includes(word)).length;
+      const concernHits = concernWords.filter(word => combined.includes(word)).length;
+
+      if (concernHits > positiveHits) {
+        return `Several responses indicate areas for review or improvement under ${title}. Common remarks may require further validation, clarification, or refinement based on the detailed comments.`;
+      }
+
+      if (positiveHits > 0) {
+        return `Many responses appear generally supportive or favorable under ${title}. The detailed comments may be reviewed to identify specific strengths, recurring suggestions, and possible refinements.`;
+      }
+
+      return `Responses under ${title} contain mixed observations and recommendations. The detailed comments may be reviewed to determine common themes, concerns, and possible action points.`;
+    }
+
+    function openCommentDetails(title) {
+      const category = commentCategories.find(c => c.title === title);
+      if (!category) return;
+
+      const matchedColumns = findCommentColumns(category.keywords);
+      let html = '';
+
+      matchedColumns.forEach(col => {
+        const comments = filteredData
+          .map(row => cleanValue(row[col]))
+          .filter(Boolean);
+
+        if (comments.length) {
+          html += `<div class="detail-row"><strong>${escapeHTML(col)}</strong></div>`;
+
+          comments.forEach((comment, index) => {
+            html += `
+              <div class="detail-row">
+                <strong>Comment ${index + 1}</strong>
+                ${escapeHTML(comment)}
+              </div>
+            `;
+          });
+        }
+      });
+
+      if (!html) {
+        html = `<div class="empty">No comments found for this category.</div>`;
+      }
+
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('detailsModal').classList.add('show');
+    }
+
+    function renderTable() {
+      const tableHead = document.getElementById('tableHead');
+      const tableBody = document.getElementById('tableBody');
+      const tableCount = document.getElementById('tableCount');
+
+      tableCount.textContent = `Showing ${filteredData.length.toLocaleString()} record/s`;
+
+      if (!headers.length) {
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = `<tr><td class="empty">No headers found.</td></tr>`;
+        return;
+      }
+
+      const displayHeaders = getDisplayHeaders();
+
+      tableHead.innerHTML = `
+        <tr>
+          <th>#</th>
+          ${displayHeaders.map(h => `<th>${escapeHTML(h)}</th>`).join('')}
+          <th>Action</th>
+        </tr>
+      `;
+
+      if (!filteredData.length) {
+        tableBody.innerHTML = `
+          <tr>
+            <td class="empty" colspan="${displayHeaders.length + 2}">
+              No matching records found.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tableBody.innerHTML = filteredData.map((row, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          ${displayHeaders.map(h => `<td>${formatCell(row[h])}</td>`).join('')}
+          <td>
+            <button style="padding:8px 10px;font-size:0.8rem;" onclick="openRecordDetails(${rawData.indexOf(row)})">
+              View
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function getDisplayHeaders() {
+      const important = [
+        detected.timestamp,
+        detected.region,
+        detected.institution,
+        detected.category
+      ].filter(Boolean);
+
+      const others = headers.filter(h => !important.includes(h));
+
+      return [...important, ...others].slice(0, 12);
+    }
+
+    function openRecordDetails(rawIndex) {
+      const row = rawData[rawIndex];
+      if (!row) return;
+
+      const html = headers.map(header => `
+        <div class="detail-row">
+          <strong>${escapeHTML(header)}</strong>
+          ${formatCell(row[header]) || '<span style="color:var(--muted);">No response</span>'}
+        </div>
+      `).join('');
+
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('detailsModal').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('detailsModal').classList.remove('show');
+    }
+
+    function updateFilterBadge() {
+      const filters = [];
+
+      const search = document.getElementById('searchInput').value.trim();
+      const f1 = document.getElementById('filterOne').value;
+      const f2 = document.getElementById('filterTwo').value;
+      const f3 = document.getElementById('filterThree').value;
+
+      if (search) filters.push(`Search: ${search}`);
+      if (f1) filters.push(f1);
+      if (f2) filters.push(f2);
+      if (f3) filters.push(f3);
+
+      document.getElementById('activeFilterBadge').textContent =
+        filters.length ? filters.join(' · ') : 'No active filter';
+    }
+
+    function exportCSV() {
+      if (!filteredData.length) {
+        alert('No records to export.');
+        return;
+      }
+
+      const csvHeaders = headers;
+      const csvRows = filteredData.map(row => {
+        return csvHeaders.map(header => {
+          const value = String(row[header] || '').replace(/"/g, '""');
+          return `"${value}"`;
+        }).join(',');
+      });
+
+      const csv = [
+        csvHeaders.map(h => `"${String(h).replace(/"/g, '""')}"`).join(','),
+        ...csvRows
+      ].join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `google-form-database-${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function cleanValue(value) {
+      return String(value || '').trim();
+    }
+
+    function formatCell(value) {
+      const text = cleanValue(value);
+
+      if (!text) return '';
+
+      if (isURL(text)) {
+        return `<a href="${escapeHTML(text)}" target="_blank" rel="noopener">Open Link</a>`;
+      }
+
+      if (text.length > 130) {
+        return `${escapeHTML(text.substring(0, 130))}...`;
+      }
+
+      return escapeHTML(text);
+    }
+
+    function isURL(text) {
+      return /^https?:\/\//i.test(text);
+    }
+
+    function formatDateTime(value) {
+      if (!value) return '--';
+
+      try {
+        const date = new Date(value);
+        return date.toLocaleString('en-PH', {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch {
+        return value;
+      }
+    }
+
+    function escapeHTML(value) {
+      return String(value || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function escapeJS(value) {
+      return String(value || '').replaceAll("'", "\\'");
+    }
+  </script>
+</body>
+</html>
