@@ -18,9 +18,21 @@
       --text: #172033;
       --muted: #667085;
       --line: #e5eaf2;
-      --green: #1f7a4d;
-      --shadow: 0 10px 28px rgba(16, 42, 84, 0.11);
-      --radius: 18px;
+      --shadow: 0 10px 28px rgba(16, 42, 84, 0.12);
+      --radius: 20px;
+    }
+
+    body.dark {
+      --blue: #dbeafe;
+      --blue2: #93c5fd;
+      --gold: #facc15;
+      --red: #fca5a5;
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --line: #334155;
+      --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
     }
 
     * {
@@ -34,31 +46,42 @@
         radial-gradient(circle at top left, rgba(214,169,58,0.18), transparent 28%),
         linear-gradient(135deg, #f6f9ff 0%, #edf2fa 100%);
       color: var(--text);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    body.dark {
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,0.10), transparent 28%),
+        linear-gradient(135deg, #020617 0%, #0f172a 100%);
     }
 
     .app {
-      width: min(1500px, 96%);
+      width: min(1560px, 96%);
       margin: 0 auto;
-      padding: 22px 0 50px;
+      padding: 24px 0 50px;
     }
 
     .hero {
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      background: linear-gradient(135deg, #102a54, #173b72);
       color: white;
-      border-radius: 24px;
-      padding: 24px;
+      border-radius: 26px;
+      padding: 30px;
       box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
     }
 
+    body.dark .hero {
+      background: linear-gradient(135deg, #020617, #1e3a8a);
+    }
+
     .hero::after {
       content: "";
       position: absolute;
-      right: -70px;
-      top: -70px;
-      width: 240px;
-      height: 240px;
+      right: -80px;
+      top: -80px;
+      width: 270px;
+      height: 270px;
       background: rgba(214,169,58,0.22);
       border-radius: 50%;
     }
@@ -73,84 +96,102 @@
       flex-wrap: wrap;
     }
 
-    .title-wrap {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
     h1 {
       margin: 0;
-      font-size: clamp(1.55rem, 2.5vw, 2.35rem);
-      line-height: 1.12;
-      letter-spacing: -0.5px;
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.8px;
+      font-weight: 900;
     }
 
     .subtitle {
-      margin: 7px 0 0;
-      color: rgba(255,255,255,0.82);
-      font-size: 0.96rem;
+      margin: 10px 0 0;
+      color: rgba(255,255,255,0.86);
+      font-size: clamp(1rem, 1.3vw, 1.25rem);
+      line-height: 1.4;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       background: rgba(255,255,255,0.14);
       border: 1px solid rgba(255,255,255,0.22);
       color: white;
       border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 0.9rem;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 600;
     }
 
     .dot {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       background: #4ade80;
       border-radius: 50%;
       box-shadow: 0 0 0 5px rgba(74,222,128,0.18);
     }
 
+    .toggle-btn {
+      width: auto;
+      border-radius: 999px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.24);
+      color: white;
+      font-weight: 800;
+    }
+
     .toolbar {
-      margin: 18px 0;
-      background: rgba(255,255,255,0.84);
+      margin: 20px 0;
+      background: rgba(255,255,255,0.88);
       backdrop-filter: blur(10px);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 14px;
+      padding: 16px;
       display: grid;
-      grid-template-columns: 1.2fr repeat(3, 1fr) auto;
-      gap: 12px;
+      grid-template-columns: 1.4fr repeat(3, 1fr) auto;
+      gap: 14px;
       align-items: center;
       position: sticky;
       top: 10px;
       z-index: 20;
     }
 
+    body.dark .toolbar {
+      background: rgba(17,24,39,0.9);
+    }
+
     .input, select, button {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px 13px;
-      font-size: 0.95rem;
-      background: white;
+      border-radius: 15px;
+      padding: 14px 15px;
+      font-size: 1.05rem;
+      background: var(--card);
       color: var(--text);
       outline: none;
     }
 
     .input:focus, select:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 0 4px rgba(214,169,58,0.16);
+      box-shadow: 0 0 0 4px rgba(214,169,58,0.18);
     }
 
     button {
       cursor: pointer;
-      background: var(--blue);
+      background: #102a54;
       color: white;
       border: none;
-      font-weight: 700;
+      font-weight: 800;
       transition: 0.18s ease;
       white-space: nowrap;
     }
@@ -161,18 +202,22 @@
     }
 
     .secondary {
-      background: white;
+      background: var(--card);
       color: var(--blue);
       border: 1px solid var(--line);
     }
 
     .grid {
       display: grid;
-      gap: 16px;
+      gap: 18px;
     }
 
     .kpis {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .worker-kpis {
+      grid-template-columns: repeat(5, 1fr);
     }
 
     .card {
@@ -180,11 +225,12 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 18px;
+      padding: 22px;
+      transition: background 0.25s ease, border 0.25s ease;
     }
 
     .kpi {
-      min-height: 130px;
+      min-height: 125px;
       display: flex;
       justify-content: space-between;
       gap: 14px;
@@ -196,46 +242,34 @@
     .kpi::after {
       content: "";
       position: absolute;
-      right: -38px;
-      bottom: -38px;
-      width: 110px;
-      height: 110px;
+      right: -40px;
+      bottom: -40px;
+      width: 115px;
+      height: 115px;
       border-radius: 50%;
-      background: rgba(214,169,58,0.15);
-    }
-
-    .kpi-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 15px;
-      display: grid;
-      place-items: center;
-      background: #f1f5fb;
-      font-size: 24px;
-      flex-shrink: 0;
+      background: rgba(214,169,58,0.14);
     }
 
     .kpi-label {
       color: var(--muted);
-      font-size: 0.88rem;
-      margin-bottom: 8px;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      font-weight: 700;
     }
 
     .kpi-value {
-      font-size: 2rem;
-      font-weight: 800;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 900;
       color: var(--blue);
       line-height: 1;
     }
 
-    .kpi-note {
-      color: var(--muted);
-      font-size: 0.84rem;
-      margin-top: 8px;
+    body.dark .kpi-value {
+      color: #facc15;
     }
 
     .section-title {
-      margin: 28px 0 12px;
+      margin: 32px 0 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -246,13 +280,19 @@
     .section-title h2 {
       margin: 0;
       color: var(--blue);
-      font-size: 1.28rem;
+      font-size: clamp(1.45rem, 2vw, 2rem);
+      font-weight: 900;
+    }
+
+    body.dark .section-title h2 {
+      color: #bfdbfe;
     }
 
     .section-title p {
-      margin: 4px 0 0;
+      margin: 6px 0 0;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 1.05rem;
+      line-height: 1.4;
     }
 
     .charts {
@@ -260,62 +300,94 @@
     }
 
     .chart-card {
-      min-height: 380px;
+      min-height: 430px;
+    }
+
+    .large-chart-card {
+      min-height: 520px;
     }
 
     .chart-wrap {
-      height: 300px;
+      height: 335px;
+    }
+
+    .large-chart-wrap {
+      height: 430px;
     }
 
     .additional-charts {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .summary-grid {
+    .summary-list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
 
-    .summary-card {
-      border-left: 5px solid var(--gold);
-      min-height: 150px;
+    details.summary-dropdown {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 7px solid var(--gold);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .summary-head {
+    details.summary-dropdown summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 22px;
+      font-size: clamp(1.15rem, 1.5vw, 1.45rem);
+      font-weight: 900;
+      color: var(--blue);
       display: flex;
-      gap: 10px;
+      justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      gap: 12px;
     }
 
-    .summary-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      background: #f7f0dc;
-      font-size: 20px;
+    body.dark details.summary-dropdown summary {
+      color: #bfdbfe;
     }
 
-    .summary-title {
-      font-weight: 800;
+    details.summary-dropdown summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .summary-count {
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .summary-content {
+      padding: 0 22px 22px;
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 1.1rem;
+    }
+
+    .comment-box {
+      margin-top: 14px;
+      background: rgba(16,42,84,0.045);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 15px;
+    }
+
+    body.dark .comment-box {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .comment-box strong {
+      display: block;
+      margin-bottom: 8px;
       color: var(--blue);
     }
 
-    .summary-text {
-      color: #344054;
-      line-height: 1.45;
-      font-size: 0.94rem;
-    }
-
-    .details-hint {
-      display: inline-block;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 0.86rem;
-      font-style: italic;
+    body.dark .comment-box strong {
+      color: #bfdbfe;
     }
 
     .table-card {
@@ -324,25 +396,26 @@
     }
 
     .table-header {
-      padding: 16px;
+      padding: 18px;
       border-bottom: 1px solid var(--line);
       display: flex;
       justify-content: space-between;
       gap: 12px;
       align-items: center;
       flex-wrap: wrap;
+      font-size: 1.08rem;
     }
 
     .table-wrap {
       overflow: auto;
-      max-height: 620px;
+      max-height: 650px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 980px;
-      font-size: 0.9rem;
+      min-width: 1050px;
+      font-size: 1rem;
     }
 
     th {
@@ -350,47 +423,63 @@
       top: 0;
       z-index: 5;
       background: #f7f9fc;
-      color: var(--blue);
+      color: #102a54;
       text-align: left;
-      padding: 12px;
+      padding: 14px;
       border-bottom: 1px solid var(--line);
       white-space: nowrap;
-      font-weight: 800;
+      font-weight: 900;
+    }
+
+    body.dark th {
+      background: #1e293b;
+      color: #bfdbfe;
     }
 
     td {
-      padding: 12px;
+      padding: 14px;
       border-bottom: 1px solid var(--line);
       vertical-align: top;
-      color: #344054;
+      color: var(--text);
     }
 
     tr:hover td {
-      background: #fbfdff;
+      background: rgba(16,42,84,0.035);
+    }
+
+    body.dark tr:hover td {
+      background: rgba(255,255,255,0.04);
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
       border-radius: 999px;
-      padding: 5px 9px;
-      font-size: 0.78rem;
-      font-weight: 700;
+      padding: 7px 11px;
+      font-size: 0.9rem;
+      font-weight: 800;
       background: #eef4ff;
-      color: var(--blue);
+      color: #102a54;
       border: 1px solid #d8e6ff;
+    }
+
+    body.dark .badge {
+      background: #1e293b;
+      color: #bfdbfe;
+      border-color: #334155;
     }
 
     .empty {
       text-align: center;
       color: var(--muted);
-      padding: 30px;
+      padding: 34px;
+      font-size: 1.08rem;
     }
 
     .mobile-note {
       display: none;
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       margin-top: 8px;
     }
 
@@ -398,7 +487,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(16, 42, 84, 0.42);
+      background: rgba(16, 42, 84, 0.48);
       z-index: 100;
       padding: 18px;
       overflow: auto;
@@ -410,19 +499,20 @@
     }
 
     .modal-box {
-      width: min(900px, 100%);
-      background: white;
-      border-radius: 22px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.22);
+      width: min(980px, 100%);
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.28);
       overflow: hidden;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
+      border: 1px solid var(--line);
     }
 
     .modal-head {
-      padding: 16px 18px;
-      background: var(--blue);
+      padding: 18px 20px;
+      background: #102a54;
       color: white;
       display: flex;
       justify-content: space-between;
@@ -432,45 +522,52 @@
 
     .modal-head h3 {
       margin: 0;
-      font-size: 1.05rem;
+      font-size: 1.25rem;
     }
 
     .close {
       width: auto;
-      padding: 8px 12px;
+      padding: 10px 14px;
       background: rgba(255,255,255,0.16);
       border: 1px solid rgba(255,255,255,0.22);
     }
 
     .modal-body {
-      padding: 18px;
+      padding: 20px;
       overflow: auto;
     }
 
     .detail-row {
-      padding: 12px 0;
+      padding: 14px 0;
       border-bottom: 1px solid var(--line);
+      font-size: 1.05rem;
+      line-height: 1.45;
     }
 
     .detail-row strong {
       display: block;
       color: var(--blue);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+    }
+
+    body.dark .detail-row strong {
+      color: #bfdbfe;
     }
 
     .footer {
-      margin-top: 22px;
+      margin-top: 24px;
       text-align: center;
       color: var(--muted);
-      font-size: 0.84rem;
+      font-size: 0.95rem;
     }
 
-    @media (max-width: 1050px) {
+    @media (max-width: 1180px) {
       .toolbar {
         grid-template-columns: 1fr 1fr;
       }
 
-      .kpis {
+      .kpis,
+      .worker-kpis {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -478,21 +575,31 @@
       .additional-charts {
         grid-template-columns: 1fr;
       }
-
-      .summary-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 700px) {
       .app {
         width: 94%;
         padding-top: 12px;
       }
 
       .hero {
-        padding: 18px;
-        border-radius: 20px;
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      .hero-content {
+        align-items: flex-start;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .status-pill,
+      .toggle-btn {
+        width: 100%;
+        justify-content: center;
       }
 
       .toolbar {
@@ -500,28 +607,42 @@
         grid-template-columns: 1fr;
       }
 
-      .kpis {
+      .kpis,
+      .worker-kpis {
         grid-template-columns: 1fr;
       }
 
       .card {
-        padding: 15px;
+        padding: 18px;
       }
 
       .chart-card {
-        min-height: 330px;
+        min-height: 370px;
+      }
+
+      .large-chart-card {
+        min-height: 420px;
       }
 
       .chart-wrap {
-        height: 260px;
+        height: 280px;
+      }
+
+      .large-chart-wrap {
+        height: 320px;
       }
 
       .mobile-note {
         display: block;
       }
 
+      details.summary-dropdown summary {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
       table {
-        min-width: 850px;
+        min-width: 900px;
       }
     }
   </style>
@@ -532,16 +653,17 @@
 
     <section class="hero">
       <div class="hero-content">
-        <div class="title-wrap">
-          <div>
-            <h1>General Education Survey Result</h1>
-            <p class="subtitle">Real-time database, charts, and survey analytics from Google Sheets responses.</p>
-          </div>
+        <div>
+          <h1>General Education Survey Result</h1>
+          <p class="subtitle">Real-time dashboard, database, worker distribution, and survey analytics.</p>
         </div>
 
-        <div class="status-pill">
-          <span class="dot"></span>
-          <span id="connectionStatus">Checking connection...</span>
+        <div class="hero-actions">
+          <div class="status-pill">
+            <span class="dot"></span>
+            <span id="connectionStatus">Checking connection...</span>
+          </div>
+          <button class="toggle-btn" onclick="toggleNightMode()">Night Mode</button>
         </div>
       </div>
     </section>
@@ -550,15 +672,15 @@
       <input id="searchInput" class="input" type="search" placeholder="Search responses, institution, region, comments..." />
 
       <select id="filterOne">
-        <option value="">All Regions / Main Filter</option>
+        <option value="">All Regions</option>
       </select>
 
       <select id="filterTwo">
-        <option value="">All Institutions / Secondary Filter</option>
+        <option value="">All Institutions</option>
       </select>
 
       <select id="filterThree">
-        <option value="">All Categories / Third Filter</option>
+        <option value="">All Categories</option>
       </select>
 
       <button onclick="refreshData()">Refresh</button>
@@ -569,113 +691,90 @@
         <div>
           <div class="kpi-label">Total Responses</div>
           <div class="kpi-value" id="totalResponses">0</div>
-          <div class="kpi-note">Based on submitted Google Form entries</div>
         </div>
-        <div class="kpi-icon">📝</div>
       </div>
 
       <div class="card kpi">
         <div>
           <div class="kpi-label">Unique Institutions</div>
           <div class="kpi-value" id="uniqueInstitutions">0</div>
-          <div class="kpi-note">Detected from institution-related column</div>
         </div>
-        <div class="kpi-icon">🏫</div>
       </div>
 
       <div class="card kpi">
         <div>
           <div class="kpi-label">Unique Regions</div>
           <div class="kpi-value" id="uniqueRegions">0</div>
-          <div class="kpi-note">Detected from region-related column</div>
         </div>
-        <div class="kpi-icon">🗺️</div>
-      </div>
-
-      <div class="card kpi">
-        <div>
-          <div class="kpi-label">Last Updated</div>
-          <div class="kpi-value" id="lastUpdated" style="font-size:1.1rem;">--</div>
-          <div class="kpi-note">Auto-read from Apps Script API</div>
-        </div>
-        <div class="kpi-icon">⏱️</div>
       </div>
     </section>
 
     <div class="section-title">
       <div>
-        <h2>Workforce Snapshot</h2>
-        <p>Automatic summary for worker-related responses such as affected worker, full-time, part-time, and contractual.</p>
+        <h2>Affected Worker Distribution</h2>
+        <p>Summary of affected workers by employment classification.</p>
       </div>
     </div>
 
-    <section class="grid kpis">
+    <section class="grid worker-kpis">
       <div class="card kpi">
         <div>
-          <div class="kpi-label">Affected Worker</div>
+          <div class="kpi-label">Total Affected</div>
           <div class="kpi-value" id="affectedWorkerCount">0</div>
-          <div class="kpi-note">Detected from survey responses</div>
         </div>
-        <div class="kpi-icon">👥</div>
+      </div>
+
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Permanent</div>
+          <div class="kpi-value" id="permanentCount">0</div>
+        </div>
       </div>
 
       <div class="card kpi">
         <div>
           <div class="kpi-label">Full-Time</div>
           <div class="kpi-value" id="fullTimeCount">0</div>
-          <div class="kpi-note">Detected from worker-related columns</div>
         </div>
-        <div class="kpi-icon">🕘</div>
       </div>
 
       <div class="card kpi">
         <div>
           <div class="kpi-label">Part-Time</div>
           <div class="kpi-value" id="partTimeCount">0</div>
-          <div class="kpi-note">Detected from worker-related columns</div>
         </div>
-        <div class="kpi-icon">🕒</div>
       </div>
 
       <div class="card kpi">
         <div>
           <div class="kpi-label">Contractual</div>
           <div class="kpi-value" id="contractualCount">0</div>
-          <div class="kpi-note">Detected from worker-related columns</div>
         </div>
-        <div class="kpi-icon">📄</div>
       </div>
     </section>
 
-    <div class="section-title">
-      <div>
-        <h2>Visual Overview</h2>
-        <p>Main charts based on the most important detected columns.</p>
+    <section class="grid charts" style="margin-top:18px;">
+      <div class="card chart-card large-chart-card">
+        <div class="section-title" style="margin-top:0;">
+          <div>
+            <h2>Employment Classification Pie Chart</h2>
+            <p>Permanent, Full-Time, Part-Time, and Contractual affected workers in one chart.</p>
+          </div>
+        </div>
+        <div class="large-chart-wrap">
+          <canvas id="workerPieChart"></canvas>
+        </div>
       </div>
-    </div>
 
-    <section class="grid charts">
-      <div class="card chart-card">
+      <div class="card chart-card large-chart-card">
         <div class="section-title" style="margin-top:0;">
           <div>
             <h2 id="chartOneTitle">Responses by Region</h2>
-            <p>Distribution of responses based on the main location/category column.</p>
+            <p>Distribution of survey responses by location or main category.</p>
           </div>
         </div>
-        <div class="chart-wrap">
+        <div class="large-chart-wrap">
           <canvas id="chartOne"></canvas>
-        </div>
-      </div>
-
-      <div class="card chart-card">
-        <div class="section-title" style="margin-top:0;">
-          <div>
-            <h2 id="chartTwoTitle">Responses by Institution</h2>
-            <p>Top entries based on the institution or secondary category column.</p>
-          </div>
-        </div>
-        <div class="chart-wrap">
-          <canvas id="chartTwo"></canvas>
         </div>
       </div>
     </section>
@@ -683,7 +782,7 @@
     <div class="section-title">
       <div>
         <h2>Additional Survey Infographics</h2>
-        <p>Automatically generated charts for worker-related questions and other possible survey items.</p>
+        <p>Additional charts generated from other survey questions.</p>
       </div>
     </div>
 
@@ -691,17 +790,17 @@
 
     <div class="section-title">
       <div>
-        <h2>Comment and Recommendation Summaries</h2>
-        <p>Displayed by row per category, readable from left to right for web and mobile users.</p>
+        <h2>Comments and Recommendation Summaries</h2>
+        <p>Select a category to view the full summary and related comments.</p>
       </div>
     </div>
 
-    <section id="summaryGrid" class="summary-grid"></section>
+    <section id="summaryList" class="summary-list"></section>
 
     <div class="section-title">
       <div>
         <h2>Database Records</h2>
-        <p>Searchable, filterable, and clickable list of Google Form responses.</p>
+        <p>Searchable and filterable list of responses.</p>
         <div class="mobile-note">Mobile users may scroll horizontally inside the table.</div>
       </div>
 
@@ -723,7 +822,7 @@
     </section>
 
     <div class="footer">
-      General Education Survey Result · Powered by Google Sheets, Apps Script, and GitHub Pages
+      General Education Survey Result
     </div>
   </div>
 
@@ -744,51 +843,43 @@
       timestamp: ['timestamp', 'time submitted', 'date submitted', 'submission date'],
       region: ['region', 'regional office', 'ched regional office', 'ro'],
       institution: ['institution', 'hei', 'higher education institution', 'name of institution', 'school'],
-      category: ['category', 'program', 'discipline', 'course', 'classification', 'type'],
-      worker: ['affected worker', 'affected workers', 'employment status', 'worker classification', 'status of employment']
+      category: ['category', 'program', 'discipline', 'course', 'classification', 'type']
     };
 
-    const workerTerms = {
-      affected: ['affected worker', 'affected workers', 'affected'],
-      fullTime: ['full time', 'full-time'],
-      partTime: ['part time', 'part-time'],
-      contractual: ['contractual', 'contract']
+    const workerColumnRules = {
+      permanent: ['permanent', '2.1'],
+      fullTime: ['full time', 'full-time', 'fulltime', '2.2'],
+      partTime: ['part time', 'part-time', 'parttime', '2.3'],
+      contractual: ['contractual', 'contract', '2.4']
     };
 
     const commentCategories = [
       {
         title: 'Curriculum Outcomes',
-        icon: '🎯',
         keywords: ['curriculum outcome', 'curriculum outcomes', 'outcome']
       },
       {
         title: 'Unit Reduction',
-        icon: '📉',
         keywords: ['unit reduction', 'units', 'unit']
       },
       {
         title: 'General Education Courses',
-        icon: '📚',
         keywords: ['general education courses', 'ge courses', 'general education', 'ge course']
       },
       {
         title: 'Faculty Qualifications',
-        icon: '👩‍🏫',
         keywords: ['faculty qualification', 'faculty qualifications', 'faculty']
       },
       {
         title: 'Quality Assurance Process',
-        icon: '✅',
         keywords: ['quality assurance', 'qa process', 'qa']
       },
       {
         title: 'General Comments',
-        icon: '💬',
         keywords: ['general comment', 'comments', 'comment']
       },
       {
         title: 'Other Recommendations',
-        icon: '💡',
         keywords: ['recommendation', 'recommendations', 'other recommendation']
       }
     ];
@@ -798,10 +889,11 @@
     let headers = [];
     let detected = {};
     let chartOneInstance = null;
-    let chartTwoInstance = null;
+    let workerPieInstance = null;
     let additionalChartInstances = [];
 
     document.addEventListener('DOMContentLoaded', () => {
+      applySavedTheme();
       setupEvents();
       testConnection();
       refreshData();
@@ -818,6 +910,19 @@
           closeModal();
         }
       });
+    }
+
+    function toggleNightMode() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('geSurveyTheme', document.body.classList.contains('dark') ? 'dark' : 'light');
+      renderAllCharts();
+    }
+
+    function applySavedTheme() {
+      const theme = localStorage.getItem('geSurveyTheme');
+      if (theme === 'dark') {
+        document.body.classList.add('dark');
+      }
     }
 
     function jsonp(url) {
@@ -848,7 +953,7 @@
 
       try {
         const data = await jsonp(`${APPS_SCRIPT_URL}?action=ping`);
-        status.textContent = data.ok ? 'Connected to Google Sheets' : 'Connection error';
+        status.textContent = data.ok ? 'Connected' : 'Connection error';
       } catch (error) {
         status.textContent = 'Not connected';
       }
@@ -856,7 +961,7 @@
 
     async function refreshData() {
       const status = document.getElementById('connectionStatus');
-      status.textContent = 'Loading data...';
+      status.textContent = 'Loading...';
 
       try {
         const response = await jsonp(`${APPS_SCRIPT_URL}?action=records`);
@@ -873,8 +978,8 @@
         populateFilters();
         applyFilters();
 
-        document.getElementById('lastUpdated').textContent = formatDateTime(response.updatedAt);
-        status.textContent = 'Connected to Google Sheets';
+        status.textContent = 'Connected';
+
       } catch (error) {
         console.error(error);
         status.textContent = 'Connection failed';
@@ -916,10 +1021,23 @@
       return '';
     }
 
+    function findColumnsByRules(rules) {
+      const found = {};
+
+      Object.keys(rules).forEach(key => {
+        found[key] = headers.filter(header => {
+          const lower = String(header).toLowerCase();
+          return rules[key].some(term => lower.includes(term.toLowerCase()));
+        });
+      });
+
+      return found;
+    }
+
     function populateFilters() {
-      populateSelect('filterOne', rawData, detected.region, 'All Regions / Main Filter');
-      populateSelect('filterTwo', rawData, detected.institution, 'All Institutions / Secondary Filter');
-      populateSelect('filterThree', rawData, detected.category, 'All Categories / Third Filter');
+      populateSelect('filterOne', rawData, detected.region, 'All Regions');
+      populateSelect('filterTwo', rawData, detected.institution, 'All Institutions');
+      populateSelect('filterThree', rawData, detected.category, 'All Categories');
     }
 
     function populateSelect(id, data, column, defaultText) {
@@ -958,8 +1076,7 @@
 
       updateKPIs();
       updateWorkerKPIs();
-      renderCharts();
-      renderAdditionalCharts();
+      renderAllCharts();
       renderSummaries();
       renderTable();
       updateFilterBadge();
@@ -967,55 +1084,85 @@
 
     function updateKPIs() {
       document.getElementById('totalResponses').textContent = filteredData.length.toLocaleString();
-
-      const institutions = uniqueCount(filteredData, detected.institution);
-      const regions = uniqueCount(filteredData, detected.region);
-
-      document.getElementById('uniqueInstitutions').textContent = institutions.toLocaleString();
-      document.getElementById('uniqueRegions').textContent = regions.toLocaleString();
+      document.getElementById('uniqueInstitutions').textContent = uniqueCount(filteredData, detected.institution).toLocaleString();
+      document.getElementById('uniqueRegions').textContent = uniqueCount(filteredData, detected.region).toLocaleString();
     }
 
     function updateWorkerKPIs() {
       const stats = computeWorkerStats(filteredData);
-      document.getElementById('affectedWorkerCount').textContent = stats.affected.toLocaleString();
+
+      document.getElementById('affectedWorkerCount').textContent = stats.total.toLocaleString();
+      document.getElementById('permanentCount').textContent = stats.permanent.toLocaleString();
       document.getElementById('fullTimeCount').textContent = stats.fullTime.toLocaleString();
       document.getElementById('partTimeCount').textContent = stats.partTime.toLocaleString();
       document.getElementById('contractualCount').textContent = stats.contractual.toLocaleString();
     }
 
     function computeWorkerStats(data) {
-      const workerColumns = headers.filter(h => {
-        const lower = h.toLowerCase();
-        return lower.includes('worker') || lower.includes('employment') || lower.includes('status') || lower.includes('contract') || lower.includes('full time') || lower.includes('part time');
-      });
+      const workerColumns = findColumnsByRules(workerColumnRules);
 
       const stats = {
-        affected: 0,
-        fullTime: 0,
-        partTime: 0,
-        contractual: 0
+        permanent: sumColumns(data, workerColumns.permanent, 'permanent'),
+        fullTime: sumColumns(data, workerColumns.fullTime, 'full time'),
+        partTime: sumColumns(data, workerColumns.partTime, 'part time'),
+        contractual: sumColumns(data, workerColumns.contractual, 'contractual')
       };
 
-      data.forEach(row => {
-        let sourceText = '';
-
-        if (workerColumns.length) {
-          sourceText = workerColumns.map(col => cleanValue(row[col])).join(' | ').toLowerCase();
-        } else {
-          sourceText = Object.values(row).join(' | ').toLowerCase();
-        }
-
-        if (containsAny(sourceText, workerTerms.affected)) stats.affected++;
-        if (containsAny(sourceText, workerTerms.fullTime)) stats.fullTime++;
-        if (containsAny(sourceText, workerTerms.partTime)) stats.partTime++;
-        if (containsAny(sourceText, workerTerms.contractual)) stats.contractual++;
-      });
+      stats.total = stats.permanent + stats.fullTime + stats.partTime + stats.contractual;
 
       return stats;
     }
 
-    function containsAny(text, words) {
-      return words.some(word => text.includes(word));
+    function sumColumns(data, columns, fallbackTerm) {
+      let total = 0;
+
+      if (columns && columns.length) {
+        data.forEach(row => {
+          columns.forEach(col => {
+            total += extractNumber(row[col]);
+          });
+        });
+        return total;
+      }
+
+      data.forEach(row => {
+        const text = Object.values(row).join(' ').toLowerCase();
+        if (text.includes(fallbackTerm)) {
+          total += 1;
+        }
+      });
+
+      return total;
+    }
+
+    function extractNumber(value) {
+      const text = cleanValue(value);
+
+      if (!text) return 0;
+
+      const cleaned = text.replace(/,/g, '');
+      const numberMatch = cleaned.match(/-?\d+(\.\d+)?/);
+
+      if (numberMatch) {
+        return Number(numberMatch[0]) || 0;
+      }
+
+      const lower = text.toLowerCase();
+
+      if (
+        lower === 'yes' ||
+        lower === 'y' ||
+        lower === 'true' ||
+        lower.includes('affected') ||
+        lower.includes('permanent') ||
+        lower.includes('full') ||
+        lower.includes('part') ||
+        lower.includes('contract')
+      ) {
+        return 1;
+      }
+
+      return 0;
     }
 
     function uniqueCount(data, column) {
@@ -1023,18 +1170,27 @@
       return new Set(data.map(row => cleanValue(row[column])).filter(Boolean)).size;
     }
 
-    function renderCharts() {
+    function renderAllCharts() {
+      renderMainCharts();
+      renderWorkerPieChart();
+      renderAdditionalCharts();
+    }
+
+    function renderMainCharts() {
       const chartOneCol = detected.region;
-      const chartTwoCol = detected.institution;
+      document.getElementById('chartOneTitle').textContent = chartOneCol ? `Responses by ${chartOneCol}` : 'Responses by Region';
 
-      document.getElementById('chartOneTitle').textContent = chartOneCol ? `Responses by ${chartOneCol}` : 'Responses by Main Category';
-      document.getElementById('chartTwoTitle').textContent = chartTwoCol ? `Responses by ${chartTwoCol}` : 'Responses by Secondary Category';
-
-      const oneData = countByColumn(filteredData, chartOneCol, 15);
-      const twoData = countByColumn(filteredData, chartTwoCol, 10);
-
+      const oneData = countByColumn(filteredData, chartOneCol, 18);
       chartOneInstance = createOrUpdateChart(chartOneInstance, 'chartOne', 'bar', oneData.labels, oneData.values, 'Responses');
-      chartTwoInstance = createOrUpdateChart(chartTwoInstance, 'chartTwo', 'doughnut', twoData.labels, twoData.values, 'Responses');
+    }
+
+    function renderWorkerPieChart() {
+      const stats = computeWorkerStats(filteredData);
+
+      const labels = ['Permanent', 'Full-Time', 'Part-Time', 'Contractual'];
+      const values = [stats.permanent, stats.fullTime, stats.partTime, stats.contractual];
+
+      workerPieInstance = createOrUpdateChart(workerPieInstance, 'workerPieChart', 'pie', labels, values, 'Affected Workers');
     }
 
     function renderAdditionalCharts() {
@@ -1047,7 +1203,7 @@
       const candidateColumns = getAdditionalChartColumns();
 
       if (!candidateColumns.length) {
-        container.innerHTML = `<div class="card"><div class="empty">No additional survey infographic columns were detected from the current responses.</div></div>`;
+        container.innerHTML = `<div class="card"><div class="empty">No additional survey infographic columns detected.</div></div>`;
         return;
       }
 
@@ -1062,7 +1218,7 @@
           <div class="section-title" style="margin-top:0;">
             <div>
               <h2>${escapeHTML(column)}</h2>
-              <p>Automatic infographic based on the survey responses.</p>
+              <p>Survey response distribution.</p>
             </div>
           </div>
           <div class="chart-wrap">
@@ -1072,47 +1228,7 @@
 
         container.appendChild(card);
 
-        const ctx = document.getElementById(chartId);
-        const chart = new Chart(ctx, {
-          type,
-          data: {
-            labels: countData.labels,
-            datasets: [{
-              label: 'Responses',
-              data: countData.values,
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: type === 'doughnut',
-                position: 'bottom'
-              },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                    const value = context.raw;
-                    const percent = total ? ((value / total) * 100).toFixed(1) : 0;
-                    return ` ${value} response/s (${percent}%)`;
-                  }
-                }
-              }
-            },
-            scales: type === 'bar' ? {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  precision: 0
-                }
-              }
-            } : {}
-          }
-        });
-
+        const chart = createOrUpdateChart(null, chartId, type, countData.labels, countData.values, 'Responses');
         additionalChartInstances.push(chart);
       });
     }
@@ -1122,29 +1238,18 @@
         detected.timestamp,
         detected.region,
         detected.institution,
-        detected.category
+        detected.category,
+        ...findColumnsByRules(workerColumnRules).permanent,
+        ...findColumnsByRules(workerColumnRules).fullTime,
+        ...findColumnsByRules(workerColumnRules).partTime,
+        ...findColumnsByRules(workerColumnRules).contractual
       ].filter(Boolean);
-
-      const priorityKeywords = [
-        'affected worker',
-        'affected workers',
-        'employment',
-        'worker',
-        'full time',
-        'part time',
-        'contractual',
-        'status'
-      ];
-
-      const priority = headers.filter(h => {
-        const lower = h.toLowerCase();
-        return priorityKeywords.some(key => lower.includes(key));
-      });
 
       const possibleCategorical = headers.filter(h => {
         if (excluded.includes(h)) return false;
 
         const lower = h.toLowerCase();
+
         if (
           lower.includes('comment') ||
           lower.includes('remarks') ||
@@ -1153,8 +1258,11 @@
           lower.includes('feedback') ||
           lower.includes('name') ||
           lower.includes('email') ||
-          lower.includes('contact')
-        ) return false;
+          lower.includes('contact') ||
+          lower.includes('timestamp')
+        ) {
+          return false;
+        }
 
         const values = filteredData.map(row => cleanValue(row[h])).filter(Boolean);
         if (!values.length) return false;
@@ -1162,11 +1270,10 @@
         const uniqueValues = [...new Set(values)];
         const avgLength = values.reduce((sum, v) => sum + v.length, 0) / values.length;
 
-        return uniqueValues.length >= 2 && uniqueValues.length <= 12 && avgLength <= 35;
+        return uniqueValues.length >= 2 && uniqueValues.length <= 14 && avgLength <= 45;
       });
 
-      const merged = [...new Set([...priority, ...possibleCategorical])];
-      return merged.slice(0, 6);
+      return possibleCategorical.slice(0, 6);
     }
 
     function countByColumn(data, column, limit = 10) {
@@ -1194,9 +1301,15 @@
     function createOrUpdateChart(instance, canvasId, type, labels, values, label) {
       const ctx = document.getElementById(canvasId);
 
+      if (!ctx) return null;
+
       if (instance) {
         instance.destroy();
       }
+
+      const isDark = document.body.classList.contains('dark');
+      const textColor = isDark ? '#f8fafc' : '#172033';
+      const gridColor = isDark ? '#334155' : '#e5eaf2';
 
       return new Chart(ctx, {
         type,
@@ -1213,8 +1326,16 @@
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: type === 'doughnut',
-              position: 'bottom'
+              display: type === 'pie' || type === 'doughnut',
+              position: 'bottom',
+              labels: {
+                color: textColor,
+                font: {
+                  size: 15,
+                  weight: 'bold'
+                },
+                padding: 18
+              }
             },
             tooltip: {
               callbacks: {
@@ -1222,16 +1343,36 @@
                   const total = context.dataset.data.reduce((a, b) => a + b, 0);
                   const value = context.raw;
                   const percent = total ? ((value / total) * 100).toFixed(1) : 0;
-                  return ` ${value} response/s (${percent}%)`;
+                  return ` ${value.toLocaleString()} (${percent}%)`;
                 }
               }
             }
           },
           scales: type === 'bar' ? {
+            x: {
+              ticks: {
+                color: textColor,
+                font: {
+                  size: 13,
+                  weight: 'bold'
+                }
+              },
+              grid: {
+                color: gridColor
+              }
+            },
             y: {
               beginAtZero: true,
               ticks: {
-                precision: 0
+                precision: 0,
+                color: textColor,
+                font: {
+                  size: 13,
+                  weight: 'bold'
+                }
+              },
+              grid: {
+                color: gridColor
               }
             }
           } : {}
@@ -1240,10 +1381,10 @@
     }
 
     function renderSummaries() {
-      const container = document.getElementById('summaryGrid');
+      const container = document.getElementById('summaryList');
       container.innerHTML = '';
 
-      commentCategories.forEach(category => {
+      commentCategories.forEach((category, index) => {
         const matchedColumns = findCommentColumns(category.keywords);
         let comments = [];
 
@@ -1251,31 +1392,48 @@
           filteredData.forEach(row => {
             const text = cleanValue(row[col]);
             if (text && text.length > 2) {
-              comments.push(text);
+              comments.push({
+                column: col,
+                text
+              });
             }
           });
         });
 
-        comments = [...new Set(comments)];
-        const summary = summarizeComments(comments, category.title);
+        const uniqueComments = removeDuplicateComments(comments);
+        const summary = summarizeComments(uniqueComments.map(c => c.text), category.title);
 
-        const div = document.createElement('div');
-        div.className = 'card summary-card';
-        div.innerHTML = `
-          <div class="summary-head">
-            <div class="summary-icon">${category.icon}</div>
-            <div>
-              <div class="summary-title">${escapeHTML(category.title)}</div>
-              <small style="color:var(--muted);">${comments.length} related comment/s found</small>
-            </div>
+        const details = document.createElement('details');
+        details.className = 'summary-dropdown';
+        if (index === 0) details.open = true;
+
+        details.innerHTML = `
+          <summary>
+            <span>${escapeHTML(category.title)}</span>
+            <span class="summary-count">${uniqueComments.length} comment/s</span>
+          </summary>
+          <div class="summary-content">
+            <p>${escapeHTML(summary)}</p>
+            ${uniqueComments.length ? uniqueComments.map((comment, i) => `
+              <div class="comment-box">
+                <strong>${escapeHTML(comment.column)} — Comment ${i + 1}</strong>
+                ${escapeHTML(comment.text)}
+              </div>
+            `).join('') : `<div class="comment-box">No comments found for this category.</div>`}
           </div>
-          <div class="summary-text">${escapeHTML(summary)}</div>
-          <span class="details-hint" onclick="openCommentDetails('${escapeJS(category.title)}')" style="cursor:pointer;">
-            Click to view details.
-          </span>
         `;
 
-        container.appendChild(div);
+        container.appendChild(details);
+      });
+    }
+
+    function removeDuplicateComments(comments) {
+      const seen = new Set();
+      return comments.filter(item => {
+        const key = item.text.toLowerCase().trim();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
       });
     }
 
@@ -1299,7 +1457,7 @@
 
     function summarizeComments(comments, title) {
       if (!comments.length) {
-        return `No available comments were detected for ${title} based on the current filtered responses.`;
+        return `No available comments were detected for ${title}.`;
       }
 
       const combined = comments.join(' ').toLowerCase();
@@ -1311,48 +1469,14 @@
       const concernHits = concernWords.filter(word => combined.includes(word)).length;
 
       if (concernHits > positiveHits) {
-        return `Several responses indicate areas for review or improvement under ${title}. Common remarks may require further validation, clarification, or refinement based on the detailed comments.`;
+        return `Several responses indicate areas for review or improvement under ${title}. The related comments may be reviewed for validation, clarification, and possible refinement.`;
       }
 
       if (positiveHits > 0) {
-        return `Many responses appear generally supportive or favorable under ${title}. The detailed comments may be reviewed to identify specific strengths, recurring suggestions, and possible refinements.`;
+        return `Many responses appear generally supportive or favorable under ${title}. The related comments may be reviewed to identify strengths and recurring suggestions.`;
       }
 
-      return `Responses under ${title} contain mixed observations and recommendations. The detailed comments may be reviewed to determine common themes, concerns, and possible action points.`;
-    }
-
-    function openCommentDetails(title) {
-      const category = commentCategories.find(c => c.title === title);
-      if (!category) return;
-
-      const matchedColumns = findCommentColumns(category.keywords);
-      let html = '';
-
-      matchedColumns.forEach(col => {
-        const comments = filteredData
-          .map(row => cleanValue(row[col]))
-          .filter(Boolean);
-
-        if (comments.length) {
-          html += `<div class="detail-row"><strong>${escapeHTML(col)}</strong></div>`;
-
-          comments.forEach((comment, index) => {
-            html += `
-              <div class="detail-row">
-                <strong>Comment ${index + 1}</strong>
-                ${escapeHTML(comment)}
-              </div>
-            `;
-          });
-        }
-      });
-
-      if (!html) {
-        html = `<div class="empty">No comments found for this category.</div>`;
-      }
-
-      document.getElementById('modalBody').innerHTML = html;
-      document.getElementById('detailsModal').classList.add('show');
+      return `Responses under ${title} contain mixed observations and recommendations. The related comments may be reviewed to determine common themes and possible action points.`;
     }
 
     function renderTable() {
@@ -1394,7 +1518,7 @@
           <td>${index + 1}</td>
           ${displayHeaders.map(h => `<td>${formatCell(row[h])}</td>`).join('')}
           <td>
-            <button style="padding:8px 10px;font-size:0.8rem;" onclick="openRecordDetails(${rawData.indexOf(row)})">
+            <button style="padding:9px 12px;font-size:0.9rem;" onclick="openRecordDetails(${rawData.indexOf(row)})">
               View
             </button>
           </td>
@@ -1411,6 +1535,7 @@
       ].filter(Boolean);
 
       const others = headers.filter(h => !important.includes(h));
+
       return [...important, ...others].slice(0, 12);
     }
 
@@ -1493,8 +1618,8 @@
         return `<a href="${escapeHTML(text)}" target="_blank" rel="noopener">Open Link</a>`;
       }
 
-      if (text.length > 130) {
-        return `${escapeHTML(text.substring(0, 130))}...`;
+      if (text.length > 150) {
+        return `${escapeHTML(text.substring(0, 150))}...`;
       }
 
       return escapeHTML(text);
@@ -1504,23 +1629,6 @@
       return /^https?:\/\//i.test(text);
     }
 
-    function formatDateTime(value) {
-      if (!value) return '--';
-
-      try {
-        const date = new Date(value);
-        return date.toLocaleString('en-PH', {
-          year: 'numeric',
-          month: 'short',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-      } catch {
-        return value;
-      }
-    }
-
     function escapeHTML(value) {
       return String(value || '')
         .replaceAll('&', '&amp;')
@@ -1528,10 +1636,6 @@
         .replaceAll('>', '&gt;')
         .replaceAll('"', '&quot;')
         .replaceAll("'", '&#039;');
-    }
-
-    function escapeJS(value) {
-      return String(value || '').replaceAll("'", "\\'");
     }
   </script>
 </body>
