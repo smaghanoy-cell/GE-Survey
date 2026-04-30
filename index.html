@@ -10,16 +10,21 @@
 
   <style>
     :root {
-      --bg: #f4f7fb;
+      --bg: #f5f7fb;
       --card: #ffffff;
       --text: #172033;
-      --muted: #64748b;
+      --muted: #5f6f89;
+
       --primary: #174ea6;
-      --primary-dark: #063970;
+      --primary-dark: #0b2f6b;
       --gold: #f4b400;
-      --border: #e2e8f0;
+
+      --border: #dbe3ef;
       --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
       --radius: 20px;
+
+      --chart-grid: rgba(15, 23, 42, 0.12);
+      --chart-label: #334155;
     }
 
     body.dark {
@@ -27,11 +32,16 @@
       --card: #111827;
       --text: #f8fafc;
       --muted: #cbd5e1;
+
       --primary: #60a5fa;
-      --primary-dark: #1d4ed8;
+      --primary-dark: #1e40af;
       --gold: #facc15;
+
       --border: #334155;
       --shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+
+      --chart-grid: rgba(226, 232, 240, 0.18);
+      --chart-label: #e2e8f0;
     }
 
     * {
@@ -420,7 +430,7 @@
 
         <div class="actions">
           <button class="btn-primary" onclick="loadDashboard()">Refresh Dashboard</button>
-          <button class="btn-secondary" onclick="toggleDarkMode()">Night Mode</button>
+          <button class="btn-secondary" onclick="toggleDarkMode(event)">Night Mode</button>
           <button class="btn-secondary" onclick="downloadCSV()">Download CSV</button>
         </div>
       </div>
@@ -493,6 +503,60 @@
     let rawRecords = [];
     let filteredRecords = [];
     let charts = [];
+
+    function getChartColors() {
+      const isDark = document.body.classList.contains('dark');
+
+      if (isDark) {
+        return {
+          text: '#e2e8f0',
+          grid: 'rgba(226, 232, 240, 0.18)',
+          border: '#111827',
+          tooltipBg: '#020617',
+          tooltipTitle: '#f8fafc',
+          tooltipBody: '#e2e8f0',
+          tooltipBorder: '#475569',
+          palette: [
+            '#60a5fa',
+            '#facc15',
+            '#34d399',
+            '#fb7185',
+            '#a78bfa',
+            '#38bdf8',
+            '#f97316',
+            '#2dd4bf',
+            '#f472b6',
+            '#c084fc',
+            '#fde68a',
+            '#86efac'
+          ]
+        };
+      }
+
+      return {
+        text: '#334155',
+        grid: 'rgba(15, 23, 42, 0.12)',
+        border: '#ffffff',
+        tooltipBg: '#ffffff',
+        tooltipTitle: '#172033',
+        tooltipBody: '#334155',
+        tooltipBorder: '#dbe3ef',
+        palette: [
+          '#174ea6',
+          '#f4b400',
+          '#2e7d32',
+          '#c62828',
+          '#6a1b9a',
+          '#0277bd',
+          '#ef6c00',
+          '#00897b',
+          '#ad1457',
+          '#455a64',
+          '#7b1fa2',
+          '#1565c0'
+        ]
+      };
+    }
 
     const commentCategories = {
       openComments: 'Open Comment',
@@ -823,13 +887,18 @@
       const ctx = document.getElementById(id);
       if (!ctx) return;
 
+      const colors = getChartColors();
+
       charts.push(new Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: data.map(d => d.name),
           datasets: [{
             data: data.map(d => d.value),
-            borderWidth: 2
+            backgroundColor: data.map((_, i) => colors.palette[i % colors.palette.length]),
+            borderColor: colors.border,
+            borderWidth: 3,
+            hoverOffset: 8
           }]
         },
         options: chartOptions()
@@ -840,6 +909,8 @@
       const ctx = document.getElementById(id);
       if (!ctx) return;
 
+      const colors = getChartColors();
+
       charts.push(new Chart(ctx, {
         type: 'bar',
         data: {
@@ -847,7 +918,10 @@
           datasets: [{
             label: 'Responses',
             data: data.map(d => d.value),
-            borderWidth: 1
+            backgroundColor: data.map((_, i) => colors.palette[i % colors.palette.length]),
+            borderColor: data.map((_, i) => colors.palette[i % colors.palette.length]),
+            borderWidth: 1,
+            borderRadius: 8
           }]
         },
         options: {
@@ -855,12 +929,20 @@
           scales: {
             y: {
               beginAtZero: true,
+              grid: {
+                color: colors.grid
+              },
               ticks: {
-                precision: 0
+                precision: 0,
+                color: colors.text
               }
             },
             x: {
+              grid: {
+                display: false
+              },
               ticks: {
+                color: colors.text,
                 autoSkip: false,
                 maxRotation: 45,
                 minRotation: 0
@@ -883,6 +965,8 @@
     }
 
     function chartOptions() {
+      const colors = getChartColors();
+
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -890,11 +974,22 @@
           legend: {
             position: 'bottom',
             labels: {
+              color: colors.text,
               boxWidth: 14,
-              padding: 16
+              padding: 16,
+              font: {
+                size: 12,
+                weight: '600'
+              }
             }
           },
           tooltip: {
+            backgroundColor: colors.tooltipBg,
+            titleColor: colors.tooltipTitle,
+            bodyColor: colors.tooltipBody,
+            borderColor: colors.tooltipBorder,
+            borderWidth: 1,
+            padding: 12,
             callbacks: {
               label: function(context) {
                 const label = context.label || context.dataset.label || '';
@@ -912,15 +1007,18 @@
       charts = [];
     }
 
-    function toggleDarkMode() {
+    function toggleDarkMode(event) {
       document.body.classList.toggle('dark');
 
       const button = event.target;
+
       if (document.body.classList.contains('dark')) {
         button.textContent = 'Day Mode';
       } else {
         button.textContent = 'Night Mode';
       }
+
+      renderDashboard();
     }
 
     function downloadCSV() {
