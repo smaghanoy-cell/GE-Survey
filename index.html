@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Google Form Results Database Dashboard</title>
+  <title>General Education Survey Result</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -79,21 +79,9 @@
       gap: 16px;
     }
 
-    .logo-badge {
-      width: 62px;
-      height: 62px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
-      display: grid;
-      place-items: center;
-      font-size: 30px;
-      flex-shrink: 0;
-    }
-
     h1 {
       margin: 0;
-      font-size: clamp(1.4rem, 2.5vw, 2.25rem);
+      font-size: clamp(1.55rem, 2.5vw, 2.35rem);
       line-height: 1.12;
       letter-spacing: -0.5px;
     }
@@ -277,6 +265,10 @@
 
     .chart-wrap {
       height: 300px;
+    }
+
+    .additional-charts {
+      grid-template-columns: repeat(2, 1fr);
     }
 
     .summary-grid {
@@ -482,7 +474,8 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .charts {
+      .charts,
+      .additional-charts {
         grid-template-columns: 1fr;
       }
 
@@ -500,16 +493,6 @@
       .hero {
         padding: 18px;
         border-radius: 20px;
-      }
-
-      .title-wrap {
-        align-items: flex-start;
-      }
-
-      .logo-badge {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
       }
 
       .toolbar {
@@ -550,10 +533,9 @@
     <section class="hero">
       <div class="hero-content">
         <div class="title-wrap">
-          <div class="logo-badge">📊</div>
           <div>
-            <h1>Google Form Results Database Dashboard</h1>
-            <p class="subtitle">Real-time database view, analysis, comments summary, and response monitoring from Google Sheets.</p>
+            <h1>General Education Survey Result</h1>
+            <p class="subtitle">Real-time database, charts, and survey analytics from Google Sheets responses.</p>
           </div>
         </div>
 
@@ -622,8 +604,53 @@
 
     <div class="section-title">
       <div>
+        <h2>Workforce Snapshot</h2>
+        <p>Automatic summary for worker-related responses such as affected worker, full-time, part-time, and contractual.</p>
+      </div>
+    </div>
+
+    <section class="grid kpis">
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Affected Worker</div>
+          <div class="kpi-value" id="affectedWorkerCount">0</div>
+          <div class="kpi-note">Detected from survey responses</div>
+        </div>
+        <div class="kpi-icon">👥</div>
+      </div>
+
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Full-Time</div>
+          <div class="kpi-value" id="fullTimeCount">0</div>
+          <div class="kpi-note">Detected from worker-related columns</div>
+        </div>
+        <div class="kpi-icon">🕘</div>
+      </div>
+
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Part-Time</div>
+          <div class="kpi-value" id="partTimeCount">0</div>
+          <div class="kpi-note">Detected from worker-related columns</div>
+        </div>
+        <div class="kpi-icon">🕒</div>
+      </div>
+
+      <div class="card kpi">
+        <div>
+          <div class="kpi-label">Contractual</div>
+          <div class="kpi-value" id="contractualCount">0</div>
+          <div class="kpi-note">Detected from worker-related columns</div>
+        </div>
+        <div class="kpi-icon">📄</div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <div>
         <h2>Visual Overview</h2>
-        <p>Charts automatically adjust based on available columns and selected filters.</p>
+        <p>Main charts based on the most important detected columns.</p>
       </div>
     </div>
 
@@ -652,6 +679,15 @@
         </div>
       </div>
     </section>
+
+    <div class="section-title">
+      <div>
+        <h2>Additional Survey Infographics</h2>
+        <p>Automatically generated charts for worker-related questions and other possible survey items.</p>
+      </div>
+    </div>
+
+    <section id="additionalCharts" class="grid additional-charts"></section>
 
     <div class="section-title">
       <div>
@@ -687,7 +723,7 @@
     </section>
 
     <div class="footer">
-      Google Form Results Database Dashboard · Powered by Google Sheets, Apps Script, and GitHub Pages
+      General Education Survey Result · Powered by Google Sheets, Apps Script, and GitHub Pages
     </div>
   </div>
 
@@ -702,20 +738,21 @@
   </div>
 
   <script>
-    /************************************************
-     * YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
-     ************************************************/
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjQ8P7Zi107X5JJ3KsdShedm0j_jhw0tKxBXBEzyHrufsHmhr8u-N1tcwX-gmO43lItQ/exec';
-
-    /************************************************
-     * DASHBOARD SETTINGS
-     ************************************************/
 
     const preferredColumnNames = {
       timestamp: ['timestamp', 'time submitted', 'date submitted', 'submission date'],
       region: ['region', 'regional office', 'ched regional office', 'ro'],
       institution: ['institution', 'hei', 'higher education institution', 'name of institution', 'school'],
-      category: ['category', 'program', 'discipline', 'course', 'classification', 'type']
+      category: ['category', 'program', 'discipline', 'course', 'classification', 'type'],
+      worker: ['affected worker', 'affected workers', 'employment status', 'worker classification', 'status of employment']
+    };
+
+    const workerTerms = {
+      affected: ['affected worker', 'affected workers', 'affected'],
+      fullTime: ['full time', 'full-time'],
+      partTime: ['part time', 'part-time'],
+      contractual: ['contractual', 'contract']
     };
 
     const commentCategories = [
@@ -762,6 +799,7 @@
     let detected = {};
     let chartOneInstance = null;
     let chartTwoInstance = null;
+    let additionalChartInstances = [];
 
     document.addEventListener('DOMContentLoaded', () => {
       setupEvents();
@@ -810,12 +848,7 @@
 
       try {
         const data = await jsonp(`${APPS_SCRIPT_URL}?action=ping`);
-
-        if (data.ok) {
-          status.textContent = 'Connected to Google Sheets';
-        } else {
-          status.textContent = 'Connection error';
-        }
+        status.textContent = data.ok ? 'Connected to Google Sheets' : 'Connection error';
       } catch (error) {
         status.textContent = 'Not connected';
       }
@@ -834,9 +867,7 @@
 
         rawData = response.records || [];
         headers = response.headers || [];
-
         detected = detectColumns(headers);
-
         filteredData = [...rawData];
 
         populateFilters();
@@ -844,15 +875,12 @@
 
         document.getElementById('lastUpdated').textContent = formatDateTime(response.updatedAt);
         status.textContent = 'Connected to Google Sheets';
-
       } catch (error) {
         console.error(error);
         status.textContent = 'Connection failed';
         document.getElementById('tableBody').innerHTML = `
           <tr>
-            <td class="empty" colspan="10">
-              ${escapeHTML(error.message)}
-            </td>
+            <td class="empty" colspan="10">${escapeHTML(error.message)}</td>
           </tr>
         `;
       }
@@ -929,7 +957,9 @@
       });
 
       updateKPIs();
+      updateWorkerKPIs();
       renderCharts();
+      renderAdditionalCharts();
       renderSummaries();
       renderTable();
       updateFilterBadge();
@@ -945,6 +975,49 @@
       document.getElementById('uniqueRegions').textContent = regions.toLocaleString();
     }
 
+    function updateWorkerKPIs() {
+      const stats = computeWorkerStats(filteredData);
+      document.getElementById('affectedWorkerCount').textContent = stats.affected.toLocaleString();
+      document.getElementById('fullTimeCount').textContent = stats.fullTime.toLocaleString();
+      document.getElementById('partTimeCount').textContent = stats.partTime.toLocaleString();
+      document.getElementById('contractualCount').textContent = stats.contractual.toLocaleString();
+    }
+
+    function computeWorkerStats(data) {
+      const workerColumns = headers.filter(h => {
+        const lower = h.toLowerCase();
+        return lower.includes('worker') || lower.includes('employment') || lower.includes('status') || lower.includes('contract') || lower.includes('full time') || lower.includes('part time');
+      });
+
+      const stats = {
+        affected: 0,
+        fullTime: 0,
+        partTime: 0,
+        contractual: 0
+      };
+
+      data.forEach(row => {
+        let sourceText = '';
+
+        if (workerColumns.length) {
+          sourceText = workerColumns.map(col => cleanValue(row[col])).join(' | ').toLowerCase();
+        } else {
+          sourceText = Object.values(row).join(' | ').toLowerCase();
+        }
+
+        if (containsAny(sourceText, workerTerms.affected)) stats.affected++;
+        if (containsAny(sourceText, workerTerms.fullTime)) stats.fullTime++;
+        if (containsAny(sourceText, workerTerms.partTime)) stats.partTime++;
+        if (containsAny(sourceText, workerTerms.contractual)) stats.contractual++;
+      });
+
+      return stats;
+    }
+
+    function containsAny(text, words) {
+      return words.some(word => text.includes(word));
+    }
+
     function uniqueCount(data, column) {
       if (!column) return 0;
       return new Set(data.map(row => cleanValue(row[column])).filter(Boolean)).size;
@@ -955,28 +1028,145 @@
       const chartTwoCol = detected.institution;
 
       document.getElementById('chartOneTitle').textContent = chartOneCol ? `Responses by ${chartOneCol}` : 'Responses by Main Category';
-      document.getElementById('chartTwoTitle').textContent = chartTwoCol ? `Top ${chartTwoCol}` : 'Top Secondary Category';
+      document.getElementById('chartTwoTitle').textContent = chartTwoCol ? `Responses by ${chartTwoCol}` : 'Responses by Secondary Category';
 
       const oneData = countByColumn(filteredData, chartOneCol, 15);
       const twoData = countByColumn(filteredData, chartTwoCol, 10);
 
-      chartOneInstance = createOrUpdateChart(
-        chartOneInstance,
-        'chartOne',
-        'bar',
-        oneData.labels,
-        oneData.values,
-        'Responses'
-      );
+      chartOneInstance = createOrUpdateChart(chartOneInstance, 'chartOne', 'bar', oneData.labels, oneData.values, 'Responses');
+      chartTwoInstance = createOrUpdateChart(chartTwoInstance, 'chartTwo', 'doughnut', twoData.labels, twoData.values, 'Responses');
+    }
 
-      chartTwoInstance = createOrUpdateChart(
-        chartTwoInstance,
-        'chartTwo',
-        'doughnut',
-        twoData.labels,
-        twoData.values,
-        'Responses'
-      );
+    function renderAdditionalCharts() {
+      const container = document.getElementById('additionalCharts');
+      container.innerHTML = '';
+
+      additionalChartInstances.forEach(chart => chart.destroy());
+      additionalChartInstances = [];
+
+      const candidateColumns = getAdditionalChartColumns();
+
+      if (!candidateColumns.length) {
+        container.innerHTML = `<div class="card"><div class="empty">No additional survey infographic columns were detected from the current responses.</div></div>`;
+        return;
+      }
+
+      candidateColumns.forEach((column, index) => {
+        const chartId = `extraChart_${index}`;
+        const countData = countByColumn(filteredData, column, 12);
+        const type = countData.labels.length <= 6 ? 'doughnut' : 'bar';
+
+        const card = document.createElement('div');
+        card.className = 'card chart-card';
+        card.innerHTML = `
+          <div class="section-title" style="margin-top:0;">
+            <div>
+              <h2>${escapeHTML(column)}</h2>
+              <p>Automatic infographic based on the survey responses.</p>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="${chartId}"></canvas>
+          </div>
+        `;
+
+        container.appendChild(card);
+
+        const ctx = document.getElementById(chartId);
+        const chart = new Chart(ctx, {
+          type,
+          data: {
+            labels: countData.labels,
+            datasets: [{
+              label: 'Responses',
+              data: countData.values,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: type === 'doughnut',
+                position: 'bottom'
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const value = context.raw;
+                    const percent = total ? ((value / total) * 100).toFixed(1) : 0;
+                    return ` ${value} response/s (${percent}%)`;
+                  }
+                }
+              }
+            },
+            scales: type === 'bar' ? {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  precision: 0
+                }
+              }
+            } : {}
+          }
+        });
+
+        additionalChartInstances.push(chart);
+      });
+    }
+
+    function getAdditionalChartColumns() {
+      const excluded = [
+        detected.timestamp,
+        detected.region,
+        detected.institution,
+        detected.category
+      ].filter(Boolean);
+
+      const priorityKeywords = [
+        'affected worker',
+        'affected workers',
+        'employment',
+        'worker',
+        'full time',
+        'part time',
+        'contractual',
+        'status'
+      ];
+
+      const priority = headers.filter(h => {
+        const lower = h.toLowerCase();
+        return priorityKeywords.some(key => lower.includes(key));
+      });
+
+      const possibleCategorical = headers.filter(h => {
+        if (excluded.includes(h)) return false;
+
+        const lower = h.toLowerCase();
+        if (
+          lower.includes('comment') ||
+          lower.includes('remarks') ||
+          lower.includes('recommendation') ||
+          lower.includes('suggestion') ||
+          lower.includes('feedback') ||
+          lower.includes('name') ||
+          lower.includes('email') ||
+          lower.includes('contact')
+        ) return false;
+
+        const values = filteredData.map(row => cleanValue(row[h])).filter(Boolean);
+        if (!values.length) return false;
+
+        const uniqueValues = [...new Set(values)];
+        const avgLength = values.reduce((sum, v) => sum + v.length, 0) / values.length;
+
+        return uniqueValues.length >= 2 && uniqueValues.length <= 12 && avgLength <= 35;
+      });
+
+      const merged = [...new Set([...priority, ...possibleCategorical])];
+      return merged.slice(0, 6);
     }
 
     function countByColumn(data, column, limit = 10) {
@@ -1055,7 +1245,6 @@
 
       commentCategories.forEach(category => {
         const matchedColumns = findCommentColumns(category.keywords);
-
         let comments = [];
 
         matchedColumns.forEach(col => {
@@ -1068,7 +1257,6 @@
         });
 
         comments = [...new Set(comments)];
-
         const summary = summarizeComments(comments, category.title);
 
         const div = document.createElement('div');
@@ -1223,7 +1411,6 @@
       ].filter(Boolean);
 
       const others = headers.filter(h => !important.includes(h));
-
       return [...important, ...others].slice(0, 12);
     }
 
@@ -1287,7 +1474,7 @@
 
       const link = document.createElement('a');
       link.href = url;
-      link.download = `google-form-database-${new Date().toISOString().slice(0,10)}.csv`;
+      link.download = `general-education-survey-result-${new Date().toISOString().slice(0,10)}.csv`;
       link.click();
 
       URL.revokeObjectURL(url);
