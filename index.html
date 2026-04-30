@@ -17,7 +17,6 @@
       --text-muted: #5f6b7a;
       --ched-blue: #0038a8;
       --ched-gold: #f6c445;
-      --accent: #1d4ed8;
       --border: #dbe3ef;
       --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
       --radius: 18px;
@@ -31,7 +30,6 @@
       --text-muted: #cbd5e1;
       --ched-blue: #60a5fa;
       --ched-gold: #facc15;
-      --accent: #93c5fd;
       --border: #334155;
       --shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     }
@@ -371,7 +369,7 @@
     <header class="header">
       <div class="header-title">
         <h1>General Education Survey Result</h1>
-        <p>Dashboard based on submitted responses from the Google Spreadsheet</p>
+        <p>Dashboard based on Google Form entries and submitted survey responses</p>
       </div>
 
       <div class="header-actions">
@@ -381,7 +379,7 @@
     </header>
 
     <section class="section">
-      <div id="statusMessage" class="status">Loading submitted survey data...</div>
+      <div id="statusMessage" class="status">Loading survey response distribution...</div>
     </section>
 
     <section class="section">
@@ -417,19 +415,19 @@
         <div class="kpi-card">
           <div class="kpi-label">Total Responses</div>
           <div id="totalResponses" class="kpi-value">0</div>
-          <div class="kpi-sub">Submitted entries</div>
+          <div class="kpi-sub">Detected from survey responses</div>
         </div>
 
         <div class="kpi-card">
-          <div class="kpi-label">Institutions</div>
+          <div class="kpi-label">Unique Institutions</div>
           <div id="totalInstitutions" class="kpi-value">0</div>
-          <div class="kpi-sub">Based on submitted institution names</div>
+          <div class="kpi-sub">Detected from institution-related column</div>
         </div>
 
         <div class="kpi-card">
-          <div class="kpi-label">Regions</div>
+          <div class="kpi-label">Unique Regions</div>
           <div id="totalRegions" class="kpi-value">0</div>
-          <div class="kpi-sub">Represented in the submitted data</div>
+          <div class="kpi-sub">Detected from region-related column</div>
         </div>
 
         <div class="kpi-card">
@@ -441,7 +439,7 @@
     </section>
 
     <section class="section">
-      <h2 class="section-title">Main Survey Results</h2>
+      <h2 class="section-title">Survey response distribution</h2>
 
       <div class="chart-grid">
         <div class="chart-card">
@@ -479,42 +477,42 @@
 
       <div class="chart-grid">
         <div class="chart-card">
-          <h3>GE Curriculum Outcomes</h3>
+          <h3>1. GE Curriculum Outcomes</h3>
           <div class="chart-holder">
             <canvas id="curriculumOutcomesChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>Reduction of Units</h3>
+          <h3>2. Reduction of Units</h3>
           <div class="chart-holder">
             <canvas id="unitReductionChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>Proposed Set of GE Courses</h3>
+          <h3>3. Proposed Set of GE Courses</h3>
           <div class="chart-holder">
             <canvas id="geCoursesChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>Faculty Qualifications</h3>
+          <h3>4. Faculty Qualifications</h3>
           <div class="chart-holder">
             <canvas id="facultyQualificationsChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>QA Process</h3>
+          <h3>5. QA Process</h3>
           <div class="chart-holder">
             <canvas id="qaProcessChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>Implementation Challenges</h3>
+          <h3>6. Implementation Challenges</h3>
           <div class="chart-holder">
             <canvas id="challengesChart"></canvas>
           </div>
@@ -523,32 +521,32 @@
     </section>
 
     <section class="section">
-      <h2 class="section-title">Additional Infographics</h2>
+      <h2 class="section-title">Additional Survey Infographics</h2>
 
       <div class="chart-grid">
         <div class="chart-card">
-          <h3>Affected Workers</h3>
+          <h3>1. Number of Affected Workers</h3>
           <div class="chart-holder">
             <canvas id="affectedWorkersChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>Employment Status</h3>
+          <h3>2. Employment Status</h3>
           <div class="chart-holder">
             <canvas id="employmentStatusChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>Institution Type</h3>
+          <h3>3. Institution Type</h3>
           <div class="chart-holder">
             <canvas id="institutionTypeChart"></canvas>
           </div>
         </div>
 
         <div class="chart-card">
-          <h3>Regional Representation</h3>
+          <h3>4. Regional Representation</h3>
           <div class="chart-holder">
             <canvas id="regionChart"></canvas>
           </div>
@@ -563,6 +561,7 @@
         <div class="comment-selector">
           <label for="commentCategory"><strong>Select Category</strong></label>
           <select id="commentCategory">
+            <option value="all">All Categories</option>
             <option value="curriculumOutcomes">Curriculum Outcomes</option>
             <option value="unitReduction">Unit Reduction</option>
             <option value="geCourses">Proposed GE Courses</option>
@@ -786,7 +785,7 @@
     }
 
     async function loadDashboardData() {
-      setStatus("Loading submitted survey data...");
+      setStatus("Loading survey response distribution...");
 
       try {
         const response = await fetch(API_URL);
@@ -798,7 +797,7 @@
         populateFilters(rawSurveyData);
         renderDashboard(filteredSurveyData);
 
-        setStatus(`${rawSurveyData.length} submitted response${rawSurveyData.length === 1 ? "" : "s"} loaded.`);
+        setStatus(`${rawSurveyData.length} survey response${rawSurveyData.length === 1 ? "" : "s"} loaded.`);
       } catch (error) {
         console.error(error);
         setStatus("Unable to load data. Please check your Google Apps Script URL or deployment access.");
@@ -885,9 +884,9 @@
     }
 
     function populateFilters(data) {
-      populateSelect("regionFilter", "Region", getUniqueValues(data, "region"));
-      populateSelect("institutionTypeFilter", "Type of Institution", getUniqueValues(data, "institutionType"));
-      populateSelect("positionFilter", "Respondent Position", getUniqueValues(data, "position"));
+      populateSelect("regionFilter", "All Regions", getUniqueValues(data, "region"));
+      populateSelect("institutionTypeFilter", "All Institution Types", getUniqueValues(data, "institutionType"));
+      populateSelect("positionFilter", "All Positions", getUniqueValues(data, "position"));
     }
 
     function populateSelect(selectId, defaultLabel, values) {
@@ -1246,6 +1245,12 @@
 
     function renderCommentSummary(data) {
       const selectedCategory = document.getElementById("commentCategory").value;
+
+      if (selectedCategory === "all") {
+        renderAllCommentCategories(data);
+        return;
+      }
+
       const category = COMMENT_CATEGORY_MAP[selectedCategory];
 
       if (!category) return;
@@ -1290,6 +1295,39 @@
           }
         </div>
       `;
+    }
+
+    function renderAllCommentCategories(data) {
+      const container = document.getElementById("commentSummaryContainer");
+
+      container.innerHTML = Object.entries(COMMENT_CATEGORY_MAP)
+        .map(([key, category]) => {
+          const comments = getSubmittedCommentsByCategory(data, key);
+          const summary = createSimpleSummary(comments, category.label);
+          const preview = comments.slice(0, 3);
+
+          return `
+            <div class="comment-summary-card">
+              <h3>${escapeHTML(category.label)}</h3>
+
+              <div class="summary-count">
+                ${comments.length} submitted comment${comments.length === 1 ? "" : "s"}
+              </div>
+
+              <div class="summary-text">
+                <p><strong>Summary:</strong> ${escapeHTML(summary)}</p>
+                ${preview.map(comment => `<p>${escapeHTML(comment)}</p>`).join("")}
+              </div>
+
+              ${
+                comments.length > 3
+                  ? `<p class="view-details"><em>Click to view details.</em></p>`
+                  : ""
+              }
+            </div>
+          `;
+        })
+        .join("");
     }
 
     function toggleCommentDetails() {
