@@ -10,36 +10,36 @@
 
   <style>
     :root {
-      --bg: #eef3fb;
+      --bg: #f3f6fb;
+      --ink: #14213d;
+      --muted: #69758a;
       --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #dbe4f0;
-      --primary: #123c7c;
-      --primary-2: #1f5fbf;
-      --gold: #d8a420;
-      --green: #0f766e;
-      --red: #b91c1c;
+      --line: #dde6f2;
+      --blue: #123c7c;
+      --blue2: #1f5fbf;
+      --gold: #d9a520;
+      --teal: #0f766e;
+      --rose: #be123c;
+      --violet: #6d28d9;
       --soft-blue: rgba(31, 95, 191, 0.10);
-      --soft-gold: rgba(216, 164, 32, 0.16);
-      --shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
-      --grid: rgba(15, 23, 42, 0.10);
+      --shadow: 0 18px 45px rgba(20, 33, 61, 0.10);
+      --grid: rgba(20, 33, 61, 0.10);
     }
 
     body.dark {
       --bg: #07111f;
-      --card: #0f1b2e;
-      --text: #e8f0fb;
+      --ink: #e8f0fb;
       --muted: #9fb1c9;
-      --border: #25364f;
-      --primary: #6ea8ff;
-      --primary-2: #9cc4ff;
+      --card: #0f1b2e;
+      --line: #25364f;
+      --blue: #6ea8ff;
+      --blue2: #9cc4ff;
       --gold: #f3c969;
-      --green: #5eead4;
-      --red: #fca5a5;
-      --soft-blue: rgba(110, 168, 255, 0.13);
-      --soft-gold: rgba(243, 201, 105, 0.16);
-      --shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+      --teal: #5eead4;
+      --rose: #fca5a5;
+      --violet: #c4b5fd;
+      --soft-blue: rgba(110, 168, 255, 0.14);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
       --grid: rgba(232, 240, 251, 0.14);
     }
 
@@ -47,118 +47,151 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(31, 95, 191, 0.18), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(216, 164, 32, 0.13), transparent 28%),
+        radial-gradient(circle at top left, rgba(31, 95, 191, .12), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(217, 165, 32, .12), transparent 30%),
         var(--bg);
-      color: var(--text);
       transition: background 0.25s ease, color 0.25s ease;
     }
 
-    .page {
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 22px;
+    .shell {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      min-height: 100vh;
     }
 
-    .hero {
-      background:
-        linear-gradient(135deg, rgba(18, 60, 124, 0.98), rgba(31, 95, 191, 0.95)),
-        linear-gradient(90deg, var(--primary), var(--primary-2));
+    aside {
+      background: #081b3a;
       color: white;
-      border-radius: 30px;
-      padding: 32px;
-      box-shadow: var(--shadow);
-      border-bottom: 7px solid var(--gold);
-      position: relative;
-      overflow: hidden;
+      padding: 28px 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
     }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      right: -80px;
-      top: -90px;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.10);
+    .side-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.65);
+      letter-spacing: .12em;
+      margin-bottom: 12px;
+      font-weight: 800;
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      left: 35%;
-      bottom: -120px;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      background: rgba(216, 164, 32, 0.18);
+    .side-main {
+      font-size: 29px;
+      line-height: 1.03;
+      font-weight: 950;
+      letter-spacing: -.05em;
+      margin-bottom: 18px;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 1;
+    .side-note {
+      color: rgba(255,255,255,.72);
+      line-height: 1.55;
+      font-size: 14px;
+      margin-bottom: 26px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 13px;
+      border-radius: 14px;
+      color: rgba(255,255,255,.78);
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      background: rgba(255,255,255,.05);
+      transition: 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: white;
+      background: linear-gradient(90deg, rgba(217,165,32,.36), rgba(255,255,255,.08));
+      border: 1px solid rgba(217,165,32,.45);
+    }
+
+    .side-footer {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .main {
+      padding: 26px;
+      max-width: 1500px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .topbar {
       display: flex;
       justify-content: space-between;
-      gap: 24px;
       align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 20px;
     }
 
-    .hero-title-block {
-      max-width: 1050px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.13);
-      border: 1px solid rgba(255, 255, 255, 0.26);
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .hero h1 {
+    .title-block h1 {
       margin: 0;
-      font-size: clamp(36px, 5vw, 68px);
-      line-height: 0.98;
-      letter-spacing: -1.8px;
+      font-size: clamp(34px, 5vw, 62px);
+      letter-spacing: -.06em;
+      line-height: .95;
     }
 
-    .hero p {
-      margin: 14px 0 0;
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 17px;
+    .title-block p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 850px;
       line-height: 1.55;
-      max-width: 980px;
     }
 
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill,
     .theme-btn {
-      border: 1px solid rgba(255, 255, 255, 0.45);
-      background: rgba(255, 255, 255, 0.16);
-      color: white;
-      padding: 12px 18px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 11px 14px;
       border-radius: 999px;
-      cursor: pointer;
-      font-weight: 900;
+      box-shadow: var(--shadow);
+      font-weight: 850;
+      color: var(--blue);
       white-space: nowrap;
     }
 
+    .theme-btn {
+      cursor: pointer;
+    }
+
     .status {
-      position: relative;
-      z-index: 1;
-      margin-top: 18px;
-      color: rgba(255, 255, 255, 0.82);
-      font-size: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 18px;
     }
 
     .loading,
@@ -167,7 +200,7 @@
       padding: 18px 20px;
       border-radius: 18px;
       background: var(--card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--line);
       box-shadow: var(--shadow);
     }
 
@@ -178,331 +211,303 @@
 
     .dashboard {
       display: none;
-      margin-top: 22px;
     }
 
-    .kpi-grid {
+    .kpis {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
       gap: 16px;
+      margin-bottom: 18px;
     }
 
     .kpi {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
       box-shadow: var(--shadow);
-      min-height: 135px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: 22px;
+      min-height: 140px;
       position: relative;
       overflow: hidden;
+    }
+
+    .kpi.hero-kpi {
+      color: white;
+      background: linear-gradient(135deg, #123c7c, #1f5fbf);
+      border: 0;
     }
 
     .kpi::after {
-      content: "";
-      position: absolute;
-      right: -38px;
-      bottom: -38px;
-      width: 115px;
-      height: 115px;
-      border-radius: 50%;
-      background: var(--soft-blue);
+      content:"";
+      position:absolute;
+      right:-38px;
+      bottom:-38px;
+      width:118px;
+      height:118px;
+      border-radius:50%;
+      background: rgba(31,95,191,.10);
     }
 
-    .kpi .label {
-      position: relative;
-      z-index: 1;
+    .hero-kpi::after {
+      background: rgba(255,255,255,.13);
+    }
+
+    .kpi-label {
+      font-size: 12px;
       color: var(--muted);
-      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.55px;
-      font-size: 13px;
+      letter-spacing: .10em;
+      font-weight: 900;
+      position: relative;
+      z-index:1;
     }
 
-    .kpi .value {
-      position: relative;
-      z-index: 1;
-      margin-top: 10px;
-      color: var(--primary);
-      font-size: 44px;
-      line-height: 1;
+    .hero-kpi .kpi-label {
+      color: rgba(255,255,255,.76);
+    }
+
+    .kpi-value {
+      font-size: 52px;
+      line-height: .9;
+      margin-top: 14px;
       font-weight: 950;
+      letter-spacing: -.05em;
+      color: var(--blue);
+      position: relative;
+      z-index:1;
+    }
+
+    .hero-kpi .kpi-value {
+      color: white;
+    }
+
+    .kpi-sub {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      position: relative;
+      z-index:1;
+      line-height: 1.4;
+    }
+
+    .hero-kpi .kpi-sub {
+      color: rgba(255,255,255,.78);
     }
 
     .section {
-      margin-top: 22px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 28px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--line);
+      border-radius: 30px;
       box-shadow: var(--shadow);
+      margin-top: 18px;
       overflow: hidden;
+      backdrop-filter: blur(10px);
     }
 
-    .section-header {
+    body.dark .section {
+      background: rgba(15, 27, 46, .78);
+    }
+
+    .section-head {
       padding: 22px 24px;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(90deg, var(--soft-blue), transparent);
       display: flex;
       justify-content: space-between;
-      gap: 18px;
-      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, var(--soft-blue), transparent);
     }
 
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .section-number {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: var(--primary);
-      color: white;
-      display: grid;
-      place-items: center;
+    .section-kicker {
+      color: var(--gold);
       font-weight: 950;
-      box-shadow: 0 10px 22px rgba(31, 95, 191, 0.22);
-      flex: none;
+      font-size: 12px;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
     }
 
     .section h2 {
       margin: 0;
-      font-size: 23px;
-      color: var(--text);
+      font-size: 24px;
+      letter-spacing: -.03em;
     }
 
-    .section-desc {
-      margin: 5px 0 0;
+    .section p {
+      margin: 6px 0 0;
       color: var(--muted);
+      line-height: 1.5;
       font-size: 14px;
-      line-height: 1.45;
     }
 
-    .section-body {
-      padding: 22px;
-    }
-
-    .insight-row {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .question-panel {
-      background: linear-gradient(180deg, var(--soft-gold), transparent);
-      border: 1px solid var(--border);
-      border-radius: 22px;
+    .body {
       padding: 20px;
     }
 
-    .question-label {
-      color: var(--gold);
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: 0.65px;
-      font-size: 12px;
+    .grid-profile {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 16px;
     }
 
-    .question-text {
-      margin-top: 8px;
-      font-size: 18px;
-      line-height: 1.45;
-      font-weight: 850;
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
 
-    .question-note {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
+    .question-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 16px;
+      align-items: stretch;
     }
 
-    .chart-card,
-    .table-card,
-    .rating-card,
-    .comment-card {
-      border: 1px solid var(--border);
-      border-radius: 22px;
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
       padding: 18px;
-      background: rgba(255, 255, 255, 0.02);
+      min-height: 360px;
+      box-shadow: 0 8px 24px rgba(20, 33, 61, 0.04);
     }
 
-    .chart-title,
-    .table-title {
+    .panel.compact {
+      min-height: unset;
+    }
+
+    .panel-title {
       margin: 0 0 12px;
       font-size: 17px;
-      color: var(--text);
       font-weight: 950;
+      letter-spacing: -.02em;
     }
 
     .chart-wrap {
+      height: 310px;
       position: relative;
-      height: 335px;
     }
 
     .chart-wrap.tall {
-      height: 440px;
+      height: 390px;
     }
 
-    .split-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+    .question-card {
+      background: linear-gradient(180deg, rgba(217,165,32,.16), rgba(255,255,255,.4));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      min-height: 100%;
     }
 
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr 1fr;
-      gap: 18px;
+    body.dark .question-card {
+      background: linear-gradient(180deg, rgba(243,201,105,.14), rgba(15,27,46,.4));
     }
 
-    .table-scroll {
-      width: 100%;
-      overflow-x: auto;
-      border-radius: 16px;
-      border: 1px solid var(--border);
+    .question-no {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: #123c7c;
+      color: white;
+      font-weight: 950;
+      margin-bottom: 14px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .question-card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: -.03em;
+    }
+
+    .question-card p {
       font-size: 14px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
       background: var(--card);
     }
 
-    th,
-    td {
-      padding: 12px 13px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
+    table {
+      width:100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--card);
+    }
+
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align:left;
+      vertical-align: middle;
     }
 
     th {
-      background: var(--soft-blue);
-      font-weight: 950;
-      color: var(--text);
+      color: var(--muted);
+      font-size:12px;
+      text-transform: uppercase;
+      letter-spacing:.06em;
       white-space: nowrap;
     }
 
-    td.number,
-    th.number {
-      text-align: right;
+    .num {
+      text-align:right;
       font-variant-numeric: tabular-nums;
+      font-weight:800;
     }
 
-    .percent-bar {
-      min-width: 120px;
+    .mini-bar {
+      height: 8px;
+      border-radius: 99px;
+      background: rgba(31,95,191,.12);
+      overflow:hidden;
+      min-width: 95px;
     }
 
-    .bar-track {
-      height: 9px;
-      border-radius: 999px;
-      background: var(--soft-blue);
-      overflow: hidden;
-      margin-top: 4px;
+    .mini-bar span {
+      display:block;
+      height:100%;
+      background: var(--blue2);
+      border-radius:99px;
     }
 
-    .bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: var(--primary);
-      width: 0;
-    }
-
-    .rating-grid {
+    .ratings {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 14px;
-      margin-bottom: 18px;
     }
 
-    .rating-card {
-      background: linear-gradient(180deg, var(--soft-blue), transparent);
-      min-height: 180px;
+    .score {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 17px;
+      min-height: 170px;
     }
 
-    .rating-card h3 {
+    .score h3 {
       margin: 0 0 12px;
-      color: var(--primary);
-      font-size: 16px;
-      line-height: 1.3;
+      font-size: 15px;
+      line-height:1.3;
     }
 
-    .rating-big {
-      font-size: 44px;
+    .score .big {
+      font-size: 42px;
+      color: var(--blue);
       font-weight: 950;
-      color: var(--primary);
-      line-height: 1;
+      letter-spacing:-.05em;
     }
 
-    .rating-meta {
-      margin-top: 10px;
+    .score .meta {
       color: var(--muted);
-      line-height: 1.5;
-      font-size: 13px;
-    }
-
-    .comments-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    details {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-      background: rgba(31, 95, 191, 0.04);
-    }
-
-    summary {
-      cursor: pointer;
-      list-style: none;
-      padding: 16px 18px;
-      font-weight: 950;
-      color: var(--primary);
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-    }
-
-    summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .comment-count {
-      background: var(--soft-blue);
-      color: var(--primary);
-      padding: 6px 10px;
-      border-radius: 999px;
       font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .comment-list {
-      margin: 0;
-      padding: 0 20px 18px 38px;
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .comment-list li {
-      margin-bottom: 9px;
-    }
-
-    .empty {
-      padding: 0 18px 18px;
-      color: var(--muted);
-      font-style: italic;
-      margin: 0;
+      margin-top: 7px;
+      line-height:1.5;
     }
 
     .executive-note {
@@ -510,9 +515,75 @@
       padding: 16px 18px;
       border-radius: 18px;
       background: var(--soft-blue);
-      border: 1px solid var(--border);
-      color: var(--text);
-      line-height: 1.5;
+      border: 1px solid var(--line);
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .comments-grid {
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    details {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .comment-count {
+      margin-left: auto;
+      color: var(--blue);
+      background: var(--soft-blue);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .comment-desc {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+
+    .comment-list {
+      padding: 0 18px 18px 34px;
+      margin: 0;
+      line-height: 1.58;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .comment-list li {
+      margin-bottom: 9px;
+    }
+
+    .empty {
+      padding: 0 16px 16px;
+      color: var(--muted);
+      font-style: italic;
+      margin: 0;
     }
 
     .footer {
@@ -520,612 +591,608 @@
       text-align: center;
       color: var(--muted);
       font-size: 13px;
+      padding-bottom: 30px;
     }
 
-    @media (max-width: 1250px) {
-      .rating-grid {
-        grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 1200px) {
+      .shell {
+        grid-template-columns: 1fr;
       }
 
-      .profile-grid,
-      .insight-row,
-      .split-grid {
+      aside {
+        display:none;
+      }
+
+      .kpis,
+      .grid-profile,
+      .grid-two,
+      .ratings,
+      .comments-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .question-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 850px) {
-      .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .hero-content {
-        flex-direction: column;
-      }
-    }
-
-    @media (max-width: 620px) {
-      .page {
+    @media (max-width: 760px) {
+      .main {
         padding: 14px;
       }
 
-      .hero {
-        padding: 22px;
-        border-radius: 24px;
+      .topbar {
+        flex-direction:column;
       }
 
-      .kpi-grid,
-      .rating-grid {
+      .actions {
+        justify-content: flex-start;
+      }
+
+      .kpis,
+      .grid-profile,
+      .grid-two,
+      .ratings,
+      .comments-grid {
         grid-template-columns: 1fr;
-      }
-
-      .kpi .value {
-        font-size: 38px;
-      }
-
-      .section-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .section-title {
-        align-items: flex-start;
-      }
-
-      .section-body {
-        padding: 16px;
       }
 
       .chart-wrap,
       .chart-wrap.tall {
-        height: 330px;
+        height: 310px;
+      }
+
+      .kpi-value {
+        font-size: 42px;
       }
 
       summary {
         flex-direction: column;
-        align-items: flex-start;
+      }
+
+      .comment-count {
+        margin-left: 0;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-title-block">
-          <div class="eyebrow">General Education Curriculum Survey Dashboard</div>
+  <div class="shell">
+    <aside>
+      <div class="side-title">Dashboard</div>
+      <div class="side-main">GE Survey Result</div>
+      <div class="side-note">
+        Executive dashboard arranged according to the actual survey questions. No logo is placed at the top-left.
+      </div>
+
+      <a href="#overview" class="nav-link active">Overview</a>
+      <a href="#profile" class="nav-link">Respondent Profile</a>
+      <a href="#familiarity" class="nav-link">Faculty Familiarity</a>
+      <a href="#awareness" class="nav-link">Faculty Awareness</a>
+      <a href="#preparedness" class="nav-link">Preparedness</a>
+      <a href="#engagement" class="nav-link">Faculty Engagement</a>
+      <a href="#implementation" class="nav-link">Implementation Needs</a>
+      <a href="#workforce" class="nav-link">Affected Workers</a>
+      <a href="#ratings" class="nav-link">Ratings</a>
+      <a href="#comments" class="nav-link">Comments</a>
+
+      <div class="side-footer">
+        Data source: Google Sheets through Apps Script Web App.
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="title-block">
           <h1>General Education Survey Result</h1>
           <p>
-            Executive dashboard showing the consolidated responses of higher education institutions on the proposed revisions to the General Education curriculum.
+            Executive view of institutional responses on the proposed GE curriculum revisions.
+            Every chart is paired with a count-and-percentage table so all numbers in the data are reflected.
           </p>
         </div>
 
-        <button class="theme-btn" onclick="toggleTheme()">Night Mode</button>
+        <div class="actions">
+          <button class="theme-btn" onclick="toggleTheme()">Night Mode</button>
+          <div class="pill">Live Google Sheet Data</div>
+        </div>
       </div>
 
       <div class="status" id="statusText">Preparing dashboard...</div>
-    </header>
 
-    <div class="loading" id="loadingBox">
-      Loading dashboard data...
-    </div>
+      <div class="loading" id="loadingBox">Loading dashboard data...</div>
 
-    <div class="error-box" id="errorBox"></div>
+      <div class="error-box" id="errorBox"></div>
 
-    <main class="dashboard" id="dashboard">
-      <section class="kpi-grid">
-        <div class="kpi">
-          <div class="label">Total Responses</div>
-          <div class="value" id="totalResponses">0</div>
-        </div>
+      <main class="dashboard" id="dashboard">
+        <section class="kpis" id="overview">
+          <div class="kpi hero-kpi">
+            <div class="kpi-label">Total Responses</div>
+            <div class="kpi-value" id="totalResponses">0</div>
+            <div class="kpi-sub">All submitted responses reflected</div>
+          </div>
 
-        <div class="kpi">
-          <div class="label">Institutions</div>
-          <div class="value" id="totalInstitutions">0</div>
-        </div>
+          <div class="kpi">
+            <div class="kpi-label">Institutions</div>
+            <div class="kpi-value" id="totalInstitutions">0</div>
+            <div class="kpi-sub">HEIs represented in the survey</div>
+          </div>
 
-        <div class="kpi">
-          <div class="label">Regions</div>
-          <div class="value" id="totalRegions">0</div>
-        </div>
+          <div class="kpi">
+            <div class="kpi-label">Regions</div>
+            <div class="kpi-value" id="totalRegions">0</div>
+            <div class="kpi-sub">Regional coverage</div>
+          </div>
 
-        <div class="kpi">
-          <div class="label">Overall Average Rating</div>
-          <div class="value" id="overallAverage">0</div>
-        </div>
-      </section>
+          <div class="kpi">
+            <div class="kpi-label">Overall Average Rating</div>
+            <div class="kpi-value" id="overallAverage">0</div>
+            <div class="kpi-sub">Average across rating questions</div>
+          </div>
+        </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">1</div>
+        <section class="section" id="profile">
+          <div class="section-head">
             <div>
+              <div class="section-kicker">Section 1</div>
               <h2>Respondent Profile</h2>
-              <p class="section-desc">Background of participating HEIs and respondents.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-body">
-          <div class="profile-grid">
-            <div class="chart-card">
-              <h3 class="chart-title">Responses per Region</h3>
-              <div class="chart-wrap tall">
-                <canvas id="regionChart"></canvas>
-              </div>
-            </div>
-
-            <div class="chart-card">
-              <h3 class="chart-title">Type of Institution</h3>
-              <div class="chart-wrap">
-                <canvas id="institutionTypeChart"></canvas>
-              </div>
-            </div>
-
-            <div class="chart-card">
-              <h3 class="chart-title">Respondent's Position</h3>
-              <div class="chart-wrap">
-                <canvas id="positionChart"></canvas>
-              </div>
+              <p>Shows who responded, where they came from, and what type of institution they represent.</p>
             </div>
           </div>
 
-          <div class="split-grid" style="margin-top: 18px;">
-            <div class="table-card">
-              <h3 class="table-title">Responses per Region — Full Count</h3>
-              <div class="table-scroll">
+          <div class="body">
+            <div class="grid-profile">
+              <div class="panel">
+                <h3 class="panel-title">Responses per Region</h3>
+                <div class="chart-wrap tall">
+                  <canvas id="regionChart"></canvas>
+                </div>
+              </div>
+
+              <div class="panel compact">
+                <h3 class="panel-title">Regional Count Table</h3>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Region</th>
+                        <th class="num">Count</th>
+                        <th class="num">%</th>
+                        <th>Share</th>
+                      </tr>
+                    </thead>
+                    <tbody id="regionTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-two" style="margin-top: 16px;">
+              <div class="panel">
+                <h3 class="panel-title">Type of Institution</h3>
+                <div class="chart-wrap">
+                  <canvas id="institutionTypeChart"></canvas>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">Respondent's Position</h3>
+                <div class="chart-wrap">
+                  <canvas id="positionChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-two" style="margin-top: 16px;">
+              <div class="panel compact">
+                <h3 class="panel-title">Type of Institution Table</h3>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th class="num">Count</th>
+                        <th class="num">%</th>
+                        <th>Share</th>
+                      </tr>
+                    </thead>
+                    <tbody id="institutionTypeTable"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="panel compact">
+                <h3 class="panel-title">Respondent Position Table</h3>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Position</th>
+                        <th class="num">Count</th>
+                        <th class="num">%</th>
+                        <th>Share</th>
+                      </tr>
+                    </thead>
+                    <tbody id="positionTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="familiarity">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Section 2</div>
+              <h2>Faculty Familiarity</h2>
+              <p>Extent of faculty familiarity with the proposed revisions to the GE curriculum.</p>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="question-grid">
+              <div class="question-card">
+                <div class="question-no">2</div>
+                <h3>Faculty Familiarity</h3>
+                <p>To what extent are your faculty members familiar with the proposed revisions to the GE curriculum?</p>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">Faculty Familiarity Distribution</h3>
+                <div class="chart-wrap">
+                  <canvas id="familiarityChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel compact" style="margin-top: 16px;">
+              <h3 class="panel-title">Faculty Familiarity Count Table</h3>
+              <div class="table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Region</th>
-                      <th class="number">Count</th>
-                      <th class="number">Percent</th>
+                      <th>Response</th>
+                      <th class="num">Count</th>
+                      <th class="num">%</th>
                       <th>Share</th>
                     </tr>
                   </thead>
-                  <tbody id="regionTable"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="table-card">
-              <h3 class="table-title">Respondent Profile Tables</h3>
-              <div class="table-scroll" style="margin-bottom: 14px;">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Type of Institution</th>
-                      <th class="number">Count</th>
-                      <th class="number">Percent</th>
-                    </tr>
-                  </thead>
-                  <tbody id="institutionTypeTable"></tbody>
-                </table>
-              </div>
-
-              <div class="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Respondent's Position</th>
-                      <th class="number">Count</th>
-                      <th class="number">Percent</th>
-                    </tr>
-                  </thead>
-                  <tbody id="positionTable"></tbody>
+                  <tbody id="familiarityTable"></tbody>
                 </table>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">2</div>
+        <section class="section" id="awareness">
+          <div class="section-head">
             <div>
-              <h2>Faculty Familiarity</h2>
-              <p class="section-desc">Extent of faculty familiarity with the proposed GE curriculum revisions.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-body">
-          <div class="insight-row">
-            <div class="question-panel">
-              <div class="question-label">Survey Question</div>
-              <div class="question-text">
-                To what extent are your faculty members familiar with the proposed revisions to the GE curriculum?
-              </div>
-              <div class="question-note">
-                This section presents the distribution of responses and the exact count and percentage for each answer.
-              </div>
-            </div>
-
-            <div class="chart-card">
-              <h3 class="chart-title">Faculty Familiarity Distribution</h3>
-              <div class="chart-wrap">
-                <canvas id="familiarityChart"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <div class="table-card" style="margin-top: 18px;">
-            <h3 class="table-title">Faculty Familiarity — Full Count</h3>
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Response</th>
-                    <th class="number">Count</th>
-                    <th class="number">Percent</th>
-                    <th>Share</th>
-                  </tr>
-                </thead>
-                <tbody id="familiarityTable"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">3</div>
-            <div>
+              <div class="section-kicker">Section 3</div>
               <h2>Faculty Awareness of Changes</h2>
-              <p class="section-desc">Awareness of reduction of units, new GE courses, and faculty qualifications.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-body">
-          <div class="insight-row">
-            <div class="question-panel">
-              <div class="question-label">Survey Question</div>
-              <div class="question-text">
-                How aware are your faculty members of the specific changes being introduced?
-              </div>
-              <div class="question-note">
-                This includes awareness of the reduction of units, new GE courses, and faculty qualification requirements.
-              </div>
-            </div>
-
-            <div class="chart-card">
-              <h3 class="chart-title">Faculty Awareness Distribution</h3>
-              <div class="chart-wrap">
-                <canvas id="awarenessChart"></canvas>
-              </div>
+              <p>Awareness of reduction of units, new GE courses, and faculty qualifications.</p>
             </div>
           </div>
 
-          <div class="table-card" style="margin-top: 18px;">
-            <h3 class="table-title">Faculty Awareness — Full Count</h3>
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Response</th>
-                    <th class="number">Count</th>
-                    <th class="number">Percent</th>
-                    <th>Share</th>
-                  </tr>
-                </thead>
-                <tbody id="awarenessTable"></tbody>
-              </table>
+          <div class="body">
+            <div class="question-grid">
+              <div class="question-card">
+                <div class="question-no">3</div>
+                <h3>Faculty Awareness</h3>
+                <p>How aware are your faculty members of the specific changes being introduced?</p>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">Faculty Awareness Distribution</h3>
+                <div class="chart-wrap">
+                  <canvas id="awarenessChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel compact" style="margin-top: 16px;">
+              <h3 class="panel-title">Faculty Awareness Count Table</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Response</th>
+                      <th class="num">Count</th>
+                      <th class="num">%</th>
+                      <th>Share</th>
+                    </tr>
+                  </thead>
+                  <tbody id="awarenessTable"></tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">4</div>
+        <section class="section" id="preparedness">
+          <div class="section-head">
             <div>
+              <div class="section-kicker">Section 4</div>
               <h2>Institutional Preparedness</h2>
-              <p class="section-desc">Readiness of institutions to implement the proposed GE curriculum changes.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-body">
-          <div class="insight-row">
-            <div class="question-panel">
-              <div class="question-label">Survey Question</div>
-              <div class="question-text">
-                How prepared is your institution to implement the proposed GE curriculum changes?
-              </div>
-              <div class="question-note">
-                This highlights the readiness level of HEIs and identifies the scale of preparedness across respondents.
-              </div>
-            </div>
-
-            <div class="chart-card">
-              <h3 class="chart-title">Institutional Preparedness Distribution</h3>
-              <div class="chart-wrap">
-                <canvas id="preparednessChart"></canvas>
-              </div>
+              <p>Readiness of institutions to implement the proposed GE curriculum changes.</p>
             </div>
           </div>
 
-          <div class="table-card" style="margin-top: 18px;">
-            <h3 class="table-title">Institutional Preparedness — Full Count</h3>
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Response</th>
-                    <th class="number">Count</th>
-                    <th class="number">Percent</th>
-                    <th>Share</th>
-                  </tr>
-                </thead>
-                <tbody id="preparednessTable"></tbody>
-              </table>
+          <div class="body">
+            <div class="question-grid">
+              <div class="question-card">
+                <div class="question-no">4</div>
+                <h3>Institutional Preparedness</h3>
+                <p>How prepared is your institution to implement the proposed GE curriculum changes?</p>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">Institutional Preparedness Distribution</h3>
+                <div class="chart-wrap">
+                  <canvas id="preparednessChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel compact" style="margin-top: 16px;">
+              <h3 class="panel-title">Institutional Preparedness Count Table</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Response</th>
+                      <th class="num">Count</th>
+                      <th class="num">%</th>
+                      <th>Share</th>
+                    </tr>
+                  </thead>
+                  <tbody id="preparednessTable"></tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">5</div>
+        <section class="section" id="engagement">
+          <div class="section-head">
             <div>
+              <div class="section-kicker">Section 5</div>
               <h2>Faculty Engagement</h2>
-              <p class="section-desc">Orientation, consultation, or discussion with faculty regarding the proposed GE curriculum.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-body">
-          <div class="insight-row">
-            <div class="question-panel">
-              <div class="question-label">Survey Question</div>
-              <div class="question-text">
-                Has your institution conducted or planned to conduct orientations, consultations, or discussions with faculty?
-              </div>
-              <div class="question-note">
-                This reflects institutional engagement with faculty members during the transition planning process.
-              </div>
-            </div>
-
-            <div class="chart-card">
-              <h3 class="chart-title">Faculty Engagement Distribution</h3>
-              <div class="chart-wrap">
-                <canvas id="engagementChart"></canvas>
-              </div>
+              <p>Orientation, consultation, or discussion with faculty regarding the proposed GE curriculum.</p>
             </div>
           </div>
 
-          <div class="table-card" style="margin-top: 18px;">
-            <h3 class="table-title">Faculty Engagement — Full Count</h3>
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Response</th>
-                    <th class="number">Count</th>
-                    <th class="number">Percent</th>
-                    <th>Share</th>
-                  </tr>
-                </thead>
-                <tbody id="engagementTable"></tbody>
-              </table>
+          <div class="body">
+            <div class="question-grid">
+              <div class="question-card">
+                <div class="question-no">5</div>
+                <h3>Faculty Engagement</h3>
+                <p>Has your institution conducted or planned orientations, consultations, or discussions with faculty?</p>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">Faculty Engagement Distribution</h3>
+                <div class="chart-wrap">
+                  <canvas id="engagementChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel compact" style="margin-top: 16px;">
+              <h3 class="panel-title">Faculty Engagement Count Table</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Response</th>
+                      <th class="num">Count</th>
+                      <th class="num">%</th>
+                      <th>Share</th>
+                    </tr>
+                  </thead>
+                  <tbody id="engagementTable"></tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">6</div>
+        <section class="section" id="implementation">
+          <div class="section-head">
             <div>
+              <div class="section-kicker">Section 6</div>
               <h2>Implementation Challenges and Support Needed</h2>
-              <p class="section-desc">Anticipated implementation challenges and requested support from CHED.</p>
+              <p>Anticipated challenges and the forms of support requested from CHED.</p>
             </div>
           </div>
-        </div>
 
-        <div class="section-body">
-          <div class="split-grid">
-            <div>
-              <div class="question-panel" style="margin-bottom: 18px;">
-                <div class="question-label">Survey Question</div>
-                <div class="question-text">
-                  What challenges does your institution anticipate in implementing the proposed GE curriculum?
+          <div class="body">
+            <div class="grid-two">
+              <div>
+                <div class="question-card" style="margin-bottom: 16px;">
+                  <div class="question-no">6</div>
+                  <h3>Implementation Challenges</h3>
+                  <p>What challenges does your institution anticipate in implementing the proposed GE curriculum?</p>
+                </div>
+
+                <div class="panel">
+                  <h3 class="panel-title">Implementation Challenges</h3>
+                  <div class="chart-wrap tall">
+                    <canvas id="challengeChart"></canvas>
+                  </div>
+                </div>
+
+                <div class="panel compact" style="margin-top: 16px;">
+                  <h3 class="panel-title">Implementation Challenges Count Table</h3>
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Challenge</th>
+                          <th class="num">Count</th>
+                          <th class="num">%</th>
+                          <th>Share</th>
+                        </tr>
+                      </thead>
+                      <tbody id="challengeTable"></tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
-              <div class="chart-card">
-                <h3 class="chart-title">Implementation Challenges</h3>
-                <div class="chart-wrap tall">
-                  <canvas id="challengeChart"></canvas>
+              <div>
+                <div class="question-card" style="margin-bottom: 16px;">
+                  <div class="question-no">7</div>
+                  <h3>Support from CHED</h3>
+                  <p>What forms of support from CHED would be most valuable during the transition?</p>
                 </div>
-              </div>
 
-              <div class="table-card" style="margin-top: 18px;">
-                <h3 class="table-title">Implementation Challenges — Full Count</h3>
-                <div class="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Challenge</th>
-                        <th class="number">Count</th>
-                        <th class="number">Percent</th>
-                        <th>Share</th>
-                      </tr>
-                    </thead>
-                    <tbody id="challengeTable"></tbody>
-                  </table>
+                <div class="panel">
+                  <h3 class="panel-title">Support Needed from CHED</h3>
+                  <div class="chart-wrap tall">
+                    <canvas id="supportChart"></canvas>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div>
-              <div class="question-panel" style="margin-bottom: 18px;">
-                <div class="question-label">Survey Question</div>
-                <div class="question-text">
-                  What forms of support from CHED would be most valuable during the transition?
-                </div>
-              </div>
-
-              <div class="chart-card">
-                <h3 class="chart-title">Support Needed from CHED</h3>
-                <div class="chart-wrap tall">
-                  <canvas id="supportChart"></canvas>
-                </div>
-              </div>
-
-              <div class="table-card" style="margin-top: 18px;">
-                <h3 class="table-title">Support Needed from CHED — Full Count</h3>
-                <div class="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Support Needed</th>
-                        <th class="number">Count</th>
-                        <th class="number">Percent</th>
-                        <th>Share</th>
-                      </tr>
-                    </thead>
-                    <tbody id="supportTable"></tbody>
-                  </table>
+                <div class="panel compact" style="margin-top: 16px;">
+                  <h3 class="panel-title">Support Needed Count Table</h3>
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Support Needed</th>
+                          <th class="num">Count</th>
+                          <th class="num">%</th>
+                          <th>Share</th>
+                        </tr>
+                      </thead>
+                      <tbody id="supportTable"></tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">7</div>
+        <section class="section" id="workforce">
+          <div class="section-head">
             <div>
+              <div class="section-kicker">Section 7</div>
               <h2>Affected Workers and Employment Type</h2>
-              <p class="section-desc">Workforce-related impact based on submitted responses.</p>
+              <p>Workforce-related impact based on submitted responses.</p>
             </div>
           </div>
-        </div>
 
-        <div class="section-body">
-          <div class="split-grid">
-            <div>
-              <div class="chart-card">
-                <h3 class="chart-title">Affected Workers</h3>
-                <div class="chart-wrap">
-                  <canvas id="affectedWorkerChart"></canvas>
+          <div class="body">
+            <div class="grid-two">
+              <div>
+                <div class="panel">
+                  <h3 class="panel-title">Affected Workers</h3>
+                  <div class="chart-wrap">
+                    <canvas id="affectedWorkerChart"></canvas>
+                  </div>
+                </div>
+
+                <div class="panel compact" style="margin-top: 16px;">
+                  <h3 class="panel-title">Affected Workers Count Table</h3>
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Response</th>
+                          <th class="num">Count</th>
+                          <th class="num">%</th>
+                          <th>Share</th>
+                        </tr>
+                      </thead>
+                      <tbody id="affectedWorkerTable"></tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
-              <div class="table-card" style="margin-top: 18px;">
-                <h3 class="table-title">Affected Workers — Full Count</h3>
-                <div class="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Response</th>
-                        <th class="number">Count</th>
-                        <th class="number">Percent</th>
-                        <th>Share</th>
-                      </tr>
-                    </thead>
-                    <tbody id="affectedWorkerTable"></tbody>
-                  </table>
+              <div>
+                <div class="panel">
+                  <h3 class="panel-title">Employment Type</h3>
+                  <div class="chart-wrap">
+                    <canvas id="employmentTypeChart"></canvas>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div>
-              <div class="chart-card">
-                <h3 class="chart-title">Employment Type</h3>
-                <div class="chart-wrap">
-                  <canvas id="employmentTypeChart"></canvas>
-                </div>
-              </div>
-
-              <div class="table-card" style="margin-top: 18px;">
-                <h3 class="table-title">Employment Type — Full Count</h3>
-                <div class="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Employment Type</th>
-                        <th class="number">Count</th>
-                        <th class="number">Percent</th>
-                        <th>Share</th>
-                      </tr>
-                    </thead>
-                    <tbody id="employmentTypeTable"></tbody>
-                  </table>
+                <div class="panel compact" style="margin-top: 16px;">
+                  <h3 class="panel-title">Employment Type Count Table</h3>
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Employment Type</th>
+                          <th class="num">Count</th>
+                          <th class="num">%</th>
+                          <th>Share</th>
+                        </tr>
+                      </thead>
+                      <tbody id="employmentTypeTable"></tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">8</div>
+        <section class="section" id="ratings">
+          <div class="section-head">
             <div>
+              <div class="section-kicker">Section 8</div>
               <h2>GE Curriculum Rating Questions</h2>
-              <p class="section-desc">Rating results for the main GE curriculum revision components.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-body">
-          <div class="rating-grid" id="ratingCards"></div>
-
-          <div class="table-card">
-            <h3 class="table-title">Rating Summary — Full Count</h3>
-            <div class="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Rating Question</th>
-                    <th class="number">Average</th>
-                    <th class="number">Lowest</th>
-                    <th class="number">Highest</th>
-                    <th class="number">Responses</th>
-                  </tr>
-                </thead>
-                <tbody id="ratingTable"></tbody>
-              </table>
+              <p>Rating results for the main GE curriculum revision components.</p>
             </div>
           </div>
 
-          <div class="executive-note" id="ratingInsight"></div>
-        </div>
-      </section>
+          <div class="body">
+            <div class="ratings" id="ratingCards"></div>
 
-      <section class="section">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-number">9</div>
+            <div class="panel compact" style="margin-top: 16px;">
+              <h3 class="panel-title">Rating Summary Table</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rating Question</th>
+                      <th class="num">Average</th>
+                      <th class="num">Lowest</th>
+                      <th class="num">Highest</th>
+                      <th class="num">Responses</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ratingTable"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="executive-note" id="ratingInsight"></div>
+          </div>
+        </section>
+
+        <section class="section" id="comments">
+          <div class="section-head">
             <div>
-              <h2>Comments and Recommendation Summaries</h2>
-              <p class="section-desc">All comments are grouped according to the corresponding survey question.</p>
+              <div class="section-kicker">Section 9</div>
+              <h2>Comments and Recommendations</h2>
+              <p>Comments are grouped by their corresponding survey question.</p>
             </div>
           </div>
-        </div>
 
-        <div class="section-body">
-          <div class="comments-container" id="commentsContainer"></div>
-        </div>
-      </section>
+          <div class="body">
+            <div class="comments-grid" id="commentsContainer"></div>
+          </div>
+        </section>
 
-      <div class="footer">
-        Dashboard generated from Google Sheets through Apps Script.
-      </div>
+        <div class="footer">
+          Dashboard generated from Google Sheets through Apps Script.
+        </div>
+      </main>
     </main>
   </div>
 
@@ -1139,21 +1206,22 @@
     const charts = {};
 
     const colorsLight = [
-      "#123c7c", "#d8a420", "#0f766e", "#b91c1c", "#6d28d9",
-      "#0369a1", "#ea580c", "#15803d", "#be185d", "#475569",
+      "#123c7c", "#1f5fbf", "#d9a520", "#0f766e", "#be123c",
+      "#6d28d9", "#0369a1", "#ea580c", "#15803d", "#475569",
       "#2563eb", "#ca8a04", "#059669", "#dc2626", "#7c3aed",
       "#0891b2", "#c2410c", "#4d7c0f", "#db2777", "#64748b"
     ];
 
     const colorsDark = [
-      "#6ea8ff", "#f3c969", "#5eead4", "#fca5a5", "#c4b5fd",
-      "#7dd3fc", "#fdba74", "#86efac", "#f9a8d4", "#cbd5e1",
+      "#6ea8ff", "#9cc4ff", "#f3c969", "#5eead4", "#fca5a5",
+      "#c4b5fd", "#7dd3fc", "#fdba74", "#86efac", "#cbd5e1",
       "#93c5fd", "#fde68a", "#99f6e4", "#fecaca", "#ddd6fe",
       "#a5f3fc", "#fed7aa", "#bbf7d0", "#fbcfe8", "#e2e8f0"
     ];
 
     document.addEventListener("DOMContentLoaded", function () {
       applySavedTheme();
+      setupNavigationHighlight();
       loadDashboardData();
     });
 
@@ -1190,6 +1258,7 @@
 
     function cleanupJsonp(callbackName) {
       delete window[callbackName];
+
       const oldScript = document.getElementById(callbackName);
       if (oldScript) oldScript.remove();
     }
@@ -1248,17 +1317,17 @@
     }
 
     function renderAllTables(c) {
-      renderCountTable("regionTable", c.regionCounts || {}, true);
-      renderCountTable("institutionTypeTable", c.institutionTypeCounts || {}, false);
-      renderCountTable("positionTable", c.respondentPositionCounts || {}, false);
-      renderCountTable("familiarityTable", c.familiarityCounts || {}, true);
-      renderCountTable("awarenessTable", c.awarenessCounts || {}, true);
-      renderCountTable("preparednessTable", c.preparednessCounts || {}, true);
-      renderCountTable("engagementTable", c.engagementCounts || {}, true);
-      renderCountTable("challengeTable", c.challengeCounts || {}, true);
-      renderCountTable("supportTable", c.supportCounts || {}, true);
-      renderCountTable("affectedWorkerTable", c.affectedWorkerCounts || {}, true);
-      renderCountTable("employmentTypeTable", c.employmentTypeCounts || {}, true);
+      renderCountTable("regionTable", c.regionCounts || {});
+      renderCountTable("institutionTypeTable", c.institutionTypeCounts || {});
+      renderCountTable("positionTable", c.respondentPositionCounts || {});
+      renderCountTable("familiarityTable", c.familiarityCounts || {});
+      renderCountTable("awarenessTable", c.awarenessCounts || {});
+      renderCountTable("preparednessTable", c.preparednessCounts || {});
+      renderCountTable("engagementTable", c.engagementCounts || {});
+      renderCountTable("challengeTable", c.challengeCounts || {});
+      renderCountTable("supportTable", c.supportCounts || {});
+      renderCountTable("affectedWorkerTable", c.affectedWorkerCounts || {});
+      renderCountTable("employmentTypeTable", c.employmentTypeCounts || {});
     }
 
     function createBarChart(canvasId, obj, options) {
@@ -1351,7 +1420,7 @@
           datasets: [{
             data: values,
             backgroundColor: labels.map((_, i) => getChartColors()[i % getChartColors().length]),
-            borderWidth: 2,
+            borderWidth: 3,
             borderColor: getCardColor()
           }]
         },
@@ -1385,7 +1454,7 @@
       });
     }
 
-    function renderCountTable(elementId, obj, includeShareBar) {
+    function renderCountTable(elementId, obj) {
       const tbody = document.getElementById(elementId);
       if (!tbody) return;
 
@@ -1393,8 +1462,11 @@
       const total = entries.reduce((sum, [, value]) => sum + Number(value || 0), 0);
 
       if (!entries.length) {
-        const colspan = includeShareBar ? 4 : 3;
-        tbody.innerHTML = `<tr><td colspan="${colspan}" style="color: var(--muted);">No data available.</td></tr>`;
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" style="color: var(--muted);">No data available.</td>
+          </tr>
+        `;
         return;
       }
 
@@ -1402,26 +1474,16 @@
         const value = Number(count || 0);
         const percent = total ? (value / total) * 100 : 0;
 
-        if (includeShareBar) {
-          return `
-            <tr>
-              <td>${escapeHtml(label)}</td>
-              <td class="number">${formatNumber(value)}</td>
-              <td class="number">${percent.toFixed(1)}%</td>
-              <td class="percent-bar">
-                <div class="bar-track">
-                  <div class="bar-fill" style="width: ${Math.min(percent, 100)}%;"></div>
-                </div>
-              </td>
-            </tr>
-          `;
-        }
-
         return `
           <tr>
             <td>${escapeHtml(label)}</td>
-            <td class="number">${formatNumber(value)}</td>
-            <td class="number">${percent.toFixed(1)}%</td>
+            <td class="num">${formatNumber(value)}</td>
+            <td class="num">${percent.toFixed(1)}%</td>
+            <td>
+              <div class="mini-bar">
+                <span style="width: ${Math.min(percent, 100)}%;"></span>
+              </div>
+            </td>
           </tr>
         `;
       }).join("");
@@ -1431,17 +1493,17 @@
       const container = document.getElementById("ratingCards");
       const rows = getRatingRows(ratings);
 
-      container.innerHTML = rows.map(([label, item, question]) => {
+      container.innerHTML = rows.map(([label, item]) => {
         item = item || {};
 
         return `
-          <div class="rating-card">
+          <div class="score">
             <h3>${escapeHtml(label)}</h3>
-            <div class="rating-big">${formatRating(item.average)}</div>
-            <div class="rating-meta">
-              Lowest: ${formatRating(item.min)}<br>
-              Highest: ${formatRating(item.max)}<br>
-              Responses: ${formatNumber(item.count || 0)}
+            <div class="big">${formatRating(item.average)}</div>
+            <div class="meta">
+              Lowest ${formatRating(item.min)} ·
+              Highest ${formatRating(item.max)} ·
+              Responses ${formatNumber(item.count || 0)}
             </div>
           </div>
         `;
@@ -1461,10 +1523,10 @@
               <strong>${escapeHtml(label)}</strong><br>
               <span style="color: var(--muted);">${escapeHtml(question)}</span>
             </td>
-            <td class="number">${formatRating(item.average)}</td>
-            <td class="number">${formatRating(item.min)}</td>
-            <td class="number">${formatRating(item.max)}</td>
-            <td class="number">${formatNumber(item.count || 0)}</td>
+            <td class="num">${formatRating(item.average)}</td>
+            <td class="num">${formatRating(item.min)}</td>
+            <td class="num">${formatRating(item.max)}</td>
+            <td class="num">${formatNumber(item.count || 0)}</td>
           </tr>
         `;
       }).join("");
@@ -1587,9 +1649,7 @@
             <summary>
               <span>
                 ${escapeHtml(title)}
-                <div style="font-weight: 500; color: var(--muted); margin-top: 4px; font-size: 13px;">
-                  ${escapeHtml(desc)}
-                </div>
+                <div class="comment-desc">${escapeHtml(desc)}</div>
               </span>
               <span class="comment-count">${formatNumber(group.count || 0)} comment/s</span>
             </summary>
@@ -1653,7 +1713,8 @@
       const isDark = document.body.classList.contains("dark");
       localStorage.setItem("dashboardTheme", isDark ? "dark" : "light");
 
-      document.querySelector(".theme-btn").textContent = isDark ? "Day Mode" : "Night Mode";
+      const btn = document.querySelector(".theme-btn");
+      if (btn) btn.textContent = isDark ? "Day Mode" : "Night Mode";
 
       refreshChartsTheme();
     }
@@ -1663,7 +1724,8 @@
 
       if (saved === "dark") {
         document.body.classList.add("dark");
-        document.querySelector(".theme-btn").textContent = "Day Mode";
+        const btn = document.querySelector(".theme-btn");
+        if (btn) btn.textContent = "Day Mode";
       }
     }
 
@@ -1701,17 +1763,39 @@
     }
 
     function getTextColor() {
-      return document.body.classList.contains("dark") ? "#e8f0fb" : "#0f172a";
+      return document.body.classList.contains("dark") ? "#e8f0fb" : "#14213d";
     }
 
     function getGridColor() {
       return document.body.classList.contains("dark")
         ? "rgba(232, 240, 251, 0.14)"
-        : "rgba(15, 23, 42, 0.10)";
+        : "rgba(20, 33, 61, 0.10)";
     }
 
     function getCardColor() {
       return document.body.classList.contains("dark") ? "#0f1b2e" : "#ffffff";
+    }
+
+    function setupNavigationHighlight() {
+      const links = document.querySelectorAll(".nav-link");
+      const sections = [...links]
+        .map(link => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+
+      window.addEventListener("scroll", function () {
+        let current = "";
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 140;
+          if (window.scrollY >= sectionTop) {
+            current = "#" + section.id;
+          }
+        });
+
+        links.forEach(link => {
+          link.classList.toggle("active", link.getAttribute("href") === current);
+        });
+      });
     }
   </script>
 </body>
