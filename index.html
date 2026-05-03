@@ -563,47 +563,21 @@
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-header">
-          <div>
-            <h2>Rating Results</h2>
-            <p>Simple comparison of the five rating questions.</p>
-          </div>
-        </div>
+     <section class="section">
+  <div class="section-header">
+    <div>
+      <h2>Affected Faculty</h2>
+      <p>Reported number of affected faculty members and employment breakdown.</p>
+    </div>
+  </div>
 
-        <div class="grid two-grid">
-          <div class="card chart-card">
-            <h3>Average Rating per Question</h3>
-            <div class="chart-wrap"><canvas id="chartRatingAverage"></canvas></div>
-          </div>
-
-          <div class="card chart-card">
-            <h3>Rating Distribution</h3>
-            <div class="chart-wrap"><canvas id="chartRatingStack"></canvas></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <div>
-            <h2>Affected Faculty</h2>
-            <p>Reported number of affected faculty members and employment breakdown.</p>
-          </div>
-        </div>
-
-        <div class="grid two-grid">
-          <div class="card chart-card">
-            <h3>Employment Type Breakdown</h3>
-            <div class="chart-wrap"><canvas id="chartEmployment"></canvas></div>
-          </div>
-
-          <div class="card chart-card">
-            <h3>Total Affected vs Breakdown</h3>
-            <div class="chart-wrap"><canvas id="chartAffectedCompare"></canvas></div>
-          </div>
-        </div>
-      </section>
+  <div class="grid">
+    <div class="card chart-card">
+      <h3>Employment Type Breakdown</h3>
+      <div class="chart-wrap"><canvas id="chartEmployment"></canvas></div>
+    </div>
+  </div>
+</section>
 
       <section class="section">
         <div class="section-header">
@@ -724,21 +698,6 @@
       createDoughnut('chartFamiliarity', d.facultyFamiliarity);
       createDoughnut('chartAwareness', d.facultyAwareness);
       createDoughnut('chartPreparedness', d.institutionalPreparedness);
-
-      createRatingAverageChart(d);
-      createRatingDistributionChart(d);
-
-      createBarFromLabels('chartEmployment', [
-        'Full Time',
-        'Part-time',
-        'Permanent',
-        'Contractual'
-      ], [
-        m.affectedFullTime || 0,
-        m.affectedPartTime || 0,
-        m.affectedPermanent || 0,
-        m.affectedContractual || 0
-      ]);
 
       createBarFromLabels('chartAffectedCompare', [
         'Total Affected',
@@ -959,70 +918,6 @@
       const values = ratingSets.map(x => averageRatingFromDistribution(x[1]));
 
       createBarFromLabels('chartRatingAverage', labels, values);
-    }
-
-    function createRatingDistributionChart(d) {
-      const labels = ['1', '2', '3', '4', '5'];
-
-      const datasets = [
-        ['GE Curriculum Outcomes', d.ratingOutcomes],
-        ['Reduction of Units', d.ratingReduction],
-        ['Proposed GE Courses', d.ratingCourses],
-        ['Faculty Qualifications', d.ratingQualifications],
-        ['QA Process', d.ratingQA]
-      ].map(([label, obj]) => ({
-        label,
-        data: labels.map(score => getRatingCount(obj, score)),
-        borderWidth: 1,
-        borderRadius: 8
-      }));
-
-      const ctx = document.getElementById('chartRatingStack');
-
-      charts.push(new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets
-        },
-        options: commonChartOptions({
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                color: getTextColor(),
-                boxWidth: 12
-              }
-            }
-          },
-          scales: {
-            x: {
-              stacked: true,
-              title: {
-                display: true,
-                text: 'Rating Score',
-                color: getMutedColor()
-              },
-              ticks: {
-                color: getMutedColor()
-              },
-              grid: {
-                color: getGridColor()
-              }
-            },
-            y: {
-              stacked: true,
-              ticks: {
-                color: getMutedColor()
-              },
-              grid: {
-                color: getGridColor()
-              }
-            }
-          }
-        })
-      }));
     }
 
     function objectToChartData(obj) {
