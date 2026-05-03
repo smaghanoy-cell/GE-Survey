@@ -563,21 +563,21 @@
         </div>
       </section>
 
-     <section class="section">
-  <div class="section-header">
-    <div>
-      <h2>Affected Faculty</h2>
-      <p>Reported number of affected faculty members and employment breakdown.</p>
-    </div>
-  </div>
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <h2>Affected Faculty</h2>
+            <p>Reported number of affected faculty members and employment breakdown.</p>
+          </div>
+        </div>
 
-  <div class="grid">
-    <div class="card chart-card">
-      <h3>Employment Type Breakdown</h3>
-      <div class="chart-wrap"><canvas id="chartEmployment"></canvas></div>
-    </div>
-  </div>
-</section>
+        <div class="grid">
+          <div class="card chart-card">
+            <h3>Employment Type Breakdown</h3>
+            <div class="chart-wrap"><canvas id="chartEmployment"></canvas></div>
+          </div>
+        </div>
+      </section>
 
       <section class="section">
         <div class="section-header">
@@ -699,14 +699,12 @@
       createDoughnut('chartAwareness', d.facultyAwareness);
       createDoughnut('chartPreparedness', d.institutionalPreparedness);
 
-      createBarFromLabels('chartAffectedCompare', [
-        'Total Affected',
+      createBarFromLabels('chartEmployment', [
         'Full Time',
         'Part-time',
         'Permanent',
         'Contractual'
       ], [
-        m.totalAffectedFaculty || 0,
         m.affectedFullTime || 0,
         m.affectedPartTime || 0,
         m.affectedPermanent || 0,
