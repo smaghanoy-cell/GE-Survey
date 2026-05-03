@@ -10,38 +10,29 @@
 
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: #f4f7fb;
       --card: #ffffff;
-      --text: #172033;
-      --muted: #5f6f89;
-
-      --primary: #174ea6;
-      --primary-dark: #0b2f6b;
-      --gold: #f4b400;
-
-      --border: #dbe3ef;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      --radius: 20px;
-
-      --chart-grid: rgba(15, 23, 42, 0.12);
-      --chart-label: #334155;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #dbe4f0;
+      --primary: #123c7c;
+      --primary2: #1f5fbf;
+      --gold: #d4a017;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.10);
+      --chart-grid: rgba(15, 23, 42, 0.10);
     }
 
     body.dark {
-      --bg: #0f172a;
-      --card: #111827;
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-
-      --primary: #60a5fa;
-      --primary-dark: #1e40af;
-      --gold: #facc15;
-
-      --border: #334155;
-      --shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
-
-      --chart-grid: rgba(226, 232, 240, 0.18);
-      --chart-label: #e2e8f0;
+      --bg: #07111f;
+      --card: #0f1b2e;
+      --text: #e5edf8;
+      --muted: #9fb1c9;
+      --border: #22324a;
+      --primary: #6ea8ff;
+      --primary2: #9cc4ff;
+      --gold: #f3c969;
+      --shadow: 0 14px 34px rgba(0, 0, 0, 0.30);
+      --chart-grid: rgba(229, 237, 248, 0.15);
     }
 
     * {
@@ -51,1146 +42,932 @@
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(23, 78, 166, 0.16), transparent 30%),
-        var(--bg);
+      background: var(--bg);
       color: var(--text);
-      transition: 0.25s ease;
+      transition: background 0.25s ease, color 0.25s ease;
     }
 
-    .app {
-      width: min(1500px, 96%);
+    .page {
+      max-width: 1500px;
       margin: 0 auto;
-      padding: 22px 0 40px;
+      padding: 24px;
     }
 
-    .topbar {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: white;
       border-radius: 24px;
-      padding: 26px;
+      padding: 28px;
       box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
+      border-bottom: 5px solid var(--gold);
     }
 
-    .topbar::after {
+    .header::after {
       content: "";
       position: absolute;
-      width: 280px;
-      height: 280px;
+      right: -90px;
+      top: -90px;
+      width: 240px;
+      height: 240px;
       border-radius: 50%;
-      background: rgba(244, 180, 0, 0.18);
-      right: -80px;
-      top: -100px;
+      background: rgba(255, 255, 255, 0.12);
     }
 
-    .title-area {
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
       position: relative;
       z-index: 1;
     }
 
-    .eyebrow {
-      display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      margin-bottom: 10px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
 
-    h1 {
+    .logo-placeholder {
+      width: 74px;
+      height: 74px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .title h1 {
       margin: 0;
-      font-size: clamp(28px, 4vw, 48px);
-      letter-spacing: -1px;
+      font-size: clamp(30px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -1.2px;
     }
 
-    .subtitle {
-      max-width: 850px;
-      line-height: 1.5;
-      opacity: 0.92;
-      margin-top: 10px;
+    .title p {
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.88);
       font-size: 16px;
     }
 
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    button,
-    select,
-    input {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      background: var(--card);
-      color: var(--text);
-      font-size: 14px;
-      outline: none;
-    }
-
-    button {
+    .theme-btn {
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
       cursor: pointer;
       font-weight: 700;
-      transition: 0.2s ease;
+      white-space: nowrap;
     }
 
-    button:hover {
-      transform: translateY(-1px);
-      opacity: 0.9;
+    .status {
+      margin-top: 16px;
+      position: relative;
+      z-index: 1;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.82);
     }
 
-    .btn-primary {
-      background: var(--gold);
-      color: #111827;
-      border: none;
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,0.16);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.35);
-    }
-
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+    .loading,
+    .error-box {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 16px;
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      color: var(--text);
       box-shadow: var(--shadow);
-      padding: 16px;
-      margin-bottom: 18px;
+      border: 1px solid var(--border);
     }
 
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .error-box {
+      display: none;
+      border-left: 6px solid #ef4444;
     }
 
-    .filter-group label {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
+    .dashboard {
+      display: none;
+      margin-top: 24px;
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .metric {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-      min-height: 130px;
-    }
-
-    .metric::before {
-      content: "";
-      position: absolute;
-      width: 8px;
-      height: 100%;
-      background: linear-gradient(var(--primary), var(--gold));
-      left: 0;
-      top: 0;
-    }
-
-    .metric-label {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .metric-value {
-      font-size: 42px;
-      font-weight: 900;
-      margin-top: 8px;
-      color: var(--primary);
-    }
-
-    body.dark .metric-value {
-      color: #93c5fd;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
       gap: 16px;
     }
 
-    .panel {
+    .card,
+    .chart-card,
+    .table-card,
+    .comments-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 22px;
       box-shadow: var(--shadow);
-      padding: 18px;
-      min-height: 390px;
     }
 
-    .panel.large {
-      grid-column: span 2;
+    .card {
+      padding: 22px;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .panel h2 {
-      margin: 0 0 5px;
+    .card .label {
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card .value {
+      margin-top: 10px;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .chart-card {
+      padding: 20px;
+      min-height: 400px;
+    }
+
+    .chart-card.large {
+      min-height: 520px;
+    }
+
+    .chart-card h2,
+    .table-card h2,
+    .comments-card h2 {
+      margin: 0 0 16px;
       font-size: 20px;
     }
 
-    .panel p {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
     .chart-wrap {
-      width: 100%;
-      height: 310px;
       position: relative;
+      height: 330px;
     }
 
-    .table-wrap {
-      overflow: auto;
-      max-height: 560px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
+    .chart-card.large .chart-wrap {
+      height: 440px;
+    }
+
+    .table-card {
+      margin-top: 18px;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1200px;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     th,
     td {
+      padding: 11px 12px;
       border-bottom: 1px solid var(--border);
-      padding: 12px;
       text-align: left;
       vertical-align: top;
     }
 
     th {
-      background: rgba(23, 78, 166, 0.09);
+      background: rgba(31, 95, 191, 0.10);
       color: var(--text);
+      font-weight: 800;
       position: sticky;
       top: 0;
-      z-index: 1;
     }
 
-    body.dark th {
-      background: #1e293b;
+    .comments-card {
+      margin-top: 18px;
+      padding: 20px;
     }
 
-    .comment-controls {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .comment-controls select {
-      min-width: 280px;
-    }
-
-    .comments-box {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      max-height: 560px;
-      overflow: auto;
-      padding-right: 4px;
-    }
-
-    .comment-item {
+    details {
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 14px;
-      background: rgba(148, 163, 184, 0.08);
-      line-height: 1.5;
-      font-size: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      background: rgba(31, 95, 191, 0.04);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .comment-list {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .comment-list li {
+      margin-bottom: 8px;
     }
 
     .empty {
       color: var(--muted);
-      padding: 14px;
-      border: 1px dashed var(--border);
-      border-radius: 16px;
+      font-style: italic;
     }
 
-    .loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 300px;
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .status-pill {
-      display: inline-block;
-      margin-top: 10px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-    }
-
-    .footer {
-      margin-top: 20px;
+    .footer-note {
+      margin-top: 18px;
       color: var(--muted);
       text-align: center;
       font-size: 13px;
     }
 
     @media (max-width: 1100px) {
-      .filters,
       .cards {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .grid {
+      .grid-2,
+      .grid-3 {
         grid-template-columns: 1fr;
       }
 
-      .panel.large {
-        grid-column: span 1;
+      .chart-card,
+      .chart-card.large {
+        min-height: 430px;
       }
     }
 
-    @media (max-width: 680px) {
-      .app {
-        width: 94%;
+    @media (max-width: 700px) {
+      .page {
+        padding: 14px;
       }
 
-      .topbar {
-        padding: 22px;
-        border-radius: 18px;
+      .header {
+        padding: 20px;
       }
 
-      .filters,
+      .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .logo-placeholder {
+        width: 58px;
+        height: 58px;
+        font-size: 14px;
+      }
+
       .cards {
         grid-template-columns: 1fr;
       }
 
-      .chart-wrap {
-        height: 330px;
-      }
-
-      .panel {
-        min-height: auto;
-      }
-
-      h1 {
-        font-size: 30px;
-      }
-
-      .metric-value {
+      .card .value {
         font-size: 36px;
       }
 
-      .comment-controls select {
-        width: 100%;
-        min-width: 100%;
+      .chart-wrap,
+      .chart-card.large .chart-wrap {
+        height: 340px;
       }
     }
 
-    /* Enhanced mobile device support */
-    @media (max-width: 768px) {
+    @media print {
+      .theme-btn {
+        display: none;
+      }
+
       body {
-        overflow-x: hidden;
+        background: white;
       }
 
-      .app {
-        width: 100%;
-        padding: 12px;
-      }
-
-      .topbar {
-        border-radius: 18px;
-        padding: 20px;
-        margin-bottom: 14px;
-      }
-
-      .eyebrow {
-        font-size: 12px;
-        padding: 6px 10px;
-      }
-
-      h1 {
-        font-size: 28px;
-        line-height: 1.15;
-      }
-
-      .status-pill {
-        font-size: 12px;
-        padding: 6px 10px;
-      }
-
-      .actions {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .actions button {
-        width: 100%;
-        min-height: 46px;
-        font-size: 15px;
-      }
-
-      .filters {
-        grid-template-columns: 1fr;
-        padding: 14px;
-        gap: 10px;
-      }
-
-      .filter-group label {
-        font-size: 12px;
-      }
-
-      select,
-      input {
-        width: 100%;
-        min-height: 46px;
-        font-size: 15px;
-      }
-
-      .cards {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      .metric {
-        min-height: 110px;
-        padding: 16px;
-      }
-
-      .metric-label {
-        font-size: 12px;
-      }
-
-      .metric-value {
-        font-size: 30px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .panel,
-      .panel.large {
-        grid-column: span 1;
-        border-radius: 18px;
-        padding: 15px;
-        min-height: auto;
-      }
-
-      .panel h2 {
-        font-size: 18px;
-        line-height: 1.25;
-      }
-
-      .panel p {
-        font-size: 13px;
-      }
-
-      .chart-wrap {
-        height: 320px;
-      }
-
-      .comments-box {
-        max-height: 420px;
-      }
-
-      .comment-item {
-        font-size: 14px;
-        padding: 12px;
-      }
-
-      .table-wrap {
-        max-height: 460px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      table {
-        min-width: 1050px;
-        font-size: 12px;
-      }
-
-      th,
-      td {
-        padding: 10px;
-      }
-    }
-
-    @media (max-width: 430px) {
-      .app {
-        padding: 10px;
-      }
-
-      .topbar {
-        padding: 18px;
-      }
-
-      h1 {
-        font-size: 25px;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .metric {
-        min-height: 95px;
-      }
-
-      .metric-value {
-        font-size: 34px;
-      }
-
-      .chart-wrap {
-        height: 300px;
-      }
-
-      .panel h2 {
-        font-size: 17px;
+      .page {
+        max-width: none;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="app">
-    <section class="topbar">
-      <div class="title-area">
-        <div class="eyebrow">CHED-OPSD Live Dashboard</div>
-        <h1>General Education Survey Result</h1>
-
-        <div class="status-pill" id="connectionStatus">Connecting to live database...</div>
-
-        <div class="actions">
-          <button class="btn-primary" onclick="loadDashboard()">Refresh Dashboard</button>
-          <button class="btn-secondary" onclick="toggleDarkMode(event)">Night Mode</button>
+  <div class="page">
+    <header class="header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="logo-placeholder">CHED</div>
+          <div class="title">
+            <h1>General Education Survey Result</h1>
+            <p>Consolidated dashboard based on submitted survey responses</p>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <section class="filters">
-      <div class="filter-group">
-        <label>Region</label>
-        <select id="regionFilter" onchange="applyFilters()">
-          <option value="">All Regions</option>
-        </select>
+        <button class="theme-btn" onclick="toggleTheme()">Night Mode</button>
       </div>
 
-      <div class="filter-group">
-        <label>Institution Type</label>
-        <select id="typeFilter" onchange="applyFilters()">
-          <option value="">All Institution Types</option>
-        </select>
-      </div>
+      <div class="status" id="statusText">Preparing dashboard...</div>
+    </header>
 
-      <div class="filter-group">
-        <label>Respondent Position</label>
-        <select id="positionFilter" onchange="applyFilters()">
-          <option value="">All Positions</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Search HEI</label>
-        <input id="searchInput" type="text" placeholder="Search institution..." oninput="applyFilters()" />
-      </div>
-    </section>
-
-    <section class="cards">
-      <div class="metric">
-        <div class="metric-label">Total Responses</div>
-        <div class="metric-value" id="totalResponses">0</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">Institutions</div>
-        <div class="metric-value" id="totalInstitutions">0</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">Regions</div>
-        <div class="metric-value" id="totalRegions">0</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">Affected Faculty</div>
-        <div class="metric-value" id="affectedFaculty">0</div>
-      </div>
-    </section>
-
-    <section id="dashboardContent" class="grid">
-      <div class="panel large">
-        <div class="loading">Loading live data...</div>
-      </div>
-    </section>
-
-    <div class="footer">
-      General Education Survey Result Dashboard
+    <div class="loading" id="loadingBox">
+      Loading dashboard data...
     </div>
-  </main>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <main class="dashboard" id="dashboard">
+      <section class="cards">
+        <div class="card">
+          <div class="label">Total Responses</div>
+          <div class="value" id="totalResponses">0</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Institutions</div>
+          <div class="value" id="totalInstitutions">0</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Regions</div>
+          <div class="value" id="totalRegions">0</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Average Rating</div>
+          <div class="value" id="overallAverage">0</div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="chart-card large">
+          <h2>Applications per Region</h2>
+          <div class="chart-wrap">
+            <canvas id="regionChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card large">
+          <h2>Type of Institution</h2>
+          <div class="chart-wrap">
+            <canvas id="institutionTypeChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-3">
+        <div class="chart-card">
+          <h2>Faculty Familiarity</h2>
+          <div class="chart-wrap">
+            <canvas id="familiarityChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Faculty Awareness</h2>
+          <div class="chart-wrap">
+            <canvas id="awarenessChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Institutional Preparedness</h2>
+          <div class="chart-wrap">
+            <canvas id="preparednessChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="chart-card">
+          <h2>Faculty Engagement</h2>
+          <div class="chart-wrap">
+            <canvas id="engagementChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Respondent's Position</h2>
+          <div class="chart-wrap">
+            <canvas id="positionChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="chart-card">
+          <h2>Implementation Challenges</h2>
+          <div class="chart-wrap">
+            <canvas id="challengeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Support from CHED</h2>
+          <div class="chart-wrap">
+            <canvas id="supportChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="chart-card">
+          <h2>Affected Workers</h2>
+          <div class="chart-wrap">
+            <canvas id="affectedWorkerChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Employment Type</h2>
+          <div class="chart-wrap">
+            <canvas id="employmentTypeChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <h2>Rating Summary</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Average</th>
+                <th>Lowest</th>
+                <th>Highest</th>
+                <th>Responses</th>
+              </tr>
+            </thead>
+            <tbody id="ratingTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <h2>Applications per Region Table</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th>Total Responses</th>
+              </tr>
+            </thead>
+            <tbody id="regionTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="comments-card">
+        <h2>Comments and Recommendation Summaries</h2>
+        <div id="commentsContainer"></div>
+      </section>
+
+      <div class="footer-note">
+        Dashboard generated from Google Sheets through Apps Script.
+      </div>
+    </main>
+  </div>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxjrdpXhB0xLPOh9Mwwwi0RUsHN3dIuu6CiTpP5Qg4M1tIiLdCt65WEpNsQun5lwcRyHQ/exec';
+    /************************************************************
+     * IMPORTANT:
+     * Replace this with your latest Apps Script Web App URL.
+     * Do not add ?mode=data here.
+     ************************************************************/
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjrdpXhB0xLPOh9Mwwwi0RUsHN3dIuu6CiTpP5Qg4M1tIiLdCt65WEpNsQun5lwcRyHQ/exec";
 
-    let rawRecords = [];
-    let filteredRecords = [];
-    let charts = [];
+    const charts = {};
 
-    function getChartColors() {
-      const isDark = document.body.classList.contains('dark');
+    const chartColors = [
+      "#1f77b4",
+      "#ffb000",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd",
+      "#17becf",
+      "#8c564b",
+      "#e377c2",
+      "#7f7f7f",
+      "#bcbd22",
+      "#4e79a7",
+      "#f28e2b",
+      "#59a14f",
+      "#e15759",
+      "#76b7b2",
+      "#edc948",
+      "#b07aa1",
+      "#ff9da7",
+      "#9c755f",
+      "#bab0ac"
+    ];
 
-      if (isDark) {
-        return {
-          text: '#e2e8f0',
-          grid: 'rgba(226, 232, 240, 0.18)',
-          border: '#111827',
-          tooltipBg: '#020617',
-          tooltipTitle: '#f8fafc',
-          tooltipBody: '#e2e8f0',
-          tooltipBorder: '#475569',
-          palette: [
-            '#60a5fa',
-            '#facc15',
-            '#34d399',
-            '#fb7185',
-            '#a78bfa',
-            '#38bdf8',
-            '#f97316',
-            '#2dd4bf',
-            '#f472b6',
-            '#c084fc',
-            '#fde68a',
-            '#86efac'
-          ]
-        };
-      }
+    document.addEventListener("DOMContentLoaded", function () {
+      applySavedTheme();
+      loadDashboardData();
+    });
 
-      return {
-        text: '#334155',
-        grid: 'rgba(15, 23, 42, 0.12)',
-        border: '#ffffff',
-        tooltipBg: '#ffffff',
-        tooltipTitle: '#172033',
-        tooltipBody: '#334155',
-        tooltipBorder: '#dbe3ef',
-        palette: [
-          '#174ea6',
-          '#f4b400',
-          '#2e7d32',
-          '#c62828',
-          '#6a1b9a',
-          '#0277bd',
-          '#ef6c00',
-          '#00897b',
-          '#ad1457',
-          '#455a64',
-          '#7b1fa2',
-          '#1565c0'
-        ]
-      };
-    }
+    function loadDashboardData() {
+      showLoading();
 
-    const commentCategories = {
-      openComments: 'Open Comment',
-      curriculumOutcomes: 'GE Curriculum Outcomes',
-      unitReduction: 'Reduction of Units',
-      proposedCourses: 'Proposed Set of GE Courses',
-      facultyQualifications: 'Faculty Qualifications',
-      qaProcess: 'Quality Assurance Process',
-      implementationChallenges: 'Implementation Challenges',
-      supportFromCHED: 'Support from CHED',
-      institutionSupportForFaculty: 'Institution Support to Affected Faculty',
-      expectedCHEDSupportAffectedFaculty: 'Expected CHED Support for Affected Faculty',
-      implementationSupportMechanisms: 'Implementation Support Mechanisms',
-      otherRecommendations: 'Other Comments or Recommendations'
-    };
+      const callbackName = "dashboardCallback_" + Date.now();
 
-    document.addEventListener('DOMContentLoaded', loadDashboard);
+      window[callbackName] = function (data) {
+        try {
+          if (!data || data.success === false) {
+            throw new Error(data && data.error ? data.error : "No data received.");
+          }
 
-    async function loadDashboard() {
-      const container = document.getElementById('dashboardContent');
-      const status = document.getElementById('connectionStatus');
-
-      status.textContent = 'Connecting to live database...';
-
-      container.innerHTML = `
-        <div class="panel large">
-          <div class="loading">Loading live data...</div>
-        </div>
-      `;
-
-      try {
-        const response = await fetch(API_URL + '?t=' + Date.now());
-        const json = await response.json();
-
-        if (!json.success) {
-          throw new Error(json.error || 'Unable to load data.');
-        }
-
-        rawRecords = json.data.records || [];
-        filteredRecords = [...rawRecords];
-
-        populateFilters();
-        renderDashboard();
-
-        status.textContent = 'Live database connected';
-
-      } catch (error) {
-        status.textContent = 'Connection error';
-
-        container.innerHTML = `
-          <div class="panel large">
-            <h2>Unable to load dashboard</h2>
-            <p>${escapeHtml(error.message)}</p>
-            <p>Please check your Apps Script deployment access, Web App URL, and Google Sheet tab name.</p>
-          </div>
-        `;
-      }
-    }
-
-    function populateFilters() {
-      fillSelect('regionFilter', rawRecords.map(r => r.region));
-      fillSelect('typeFilter', rawRecords.map(r => r.institutionType));
-      fillSelect('positionFilter', rawRecords.map(r => r.respondentPosition));
-    }
-
-    function fillSelect(id, values) {
-      const select = document.getElementById(id);
-      const firstOptionText = select.options[0].textContent;
-      const firstOptionValue = select.options[0].value;
-
-      const unique = [...new Set(values.filter(Boolean))]
-        .sort((a, b) => String(a).localeCompare(String(b)));
-
-      select.innerHTML = `<option value="${firstOptionValue}">${firstOptionText}</option>` +
-        unique
-          .map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
-          .join('');
-    }
-
-    function applyFilters() {
-      const region = document.getElementById('regionFilter').value;
-      const type = document.getElementById('typeFilter').value;
-      const position = document.getElementById('positionFilter').value;
-      const search = document.getElementById('searchInput').value.toLowerCase().trim();
-
-      filteredRecords = rawRecords.filter(r => {
-        const matchesRegion = !region || r.region === region;
-        const matchesType = !type || r.institutionType === type;
-        const matchesPosition = !position || r.respondentPosition === position;
-        const matchesSearch = !search || String(r.institution || '').toLowerCase().includes(search);
-
-        return matchesRegion && matchesType && matchesPosition && matchesSearch;
-      });
-
-      renderDashboard();
-    }
-
-    function renderDashboard() {
-      destroyCharts();
-
-      const summary = buildClientSummary(filteredRecords);
-
-      document.getElementById('totalResponses').textContent = number(summary.totalResponses);
-      document.getElementById('totalInstitutions').textContent = number(summary.institutions);
-      document.getElementById('totalRegions').textContent = number(summary.regions);
-      document.getElementById('affectedFaculty').textContent = number(summary.affectedFaculty.totalDeclaredAffected);
-
-      const container = document.getElementById('dashboardContent');
-
-      container.innerHTML = `
-        ${chartPanel('regionChart', 'Responses by Region', 'Distribution of responses by region.')}
-        ${chartPanel('institutionTypeChart', 'Responses by Institution Type', 'Distribution of HEIs by type of institution.')}
-
-        ${chartPanel('familiarityChart', 'Faculty Familiarity', 'Extent of faculty familiarity with the proposed revisions.')}
-        ${chartPanel('awarenessChart', 'Faculty Awareness of Changes', 'Awareness of reduction of units, new GE courses, and faculty qualifications.')}
-
-        ${chartPanel('preparednessChart', 'Institutional Preparedness', 'Preparedness of institutions to implement the proposed GE curriculum changes.')}
-        ${chartPanel('engagementChart', 'Faculty Engagement', 'Orientation, consultations, or discussions conducted or planned.')}
-
-        ${chartPanel('curriculumOutcomeRatingChart', 'GE Curriculum Outcomes', 'Clarity and alignment with PQF Level 6 outcomes.')}
-        ${chartPanel('unitReductionRatingChart', 'Reduction of Units', 'Feasibility and impact of reduction from 36 to 18 units.')}
-
-        ${chartPanel('proposedCoursesRatingChart', 'Proposed Set of GE Courses', 'Relevance of the proposed courses including core, labor education, and institutional elective.')}
-        ${chartPanel('facultyQualificationsRatingChart', 'Faculty Qualifications', 'Adequacy of the requirement that faculty must hold at least one level higher qualification.')}
-
-        ${chartPanel('qaProcessRatingChart', 'Quality Assurance Process', 'Effectiveness of proposed QA mechanisms such as monitoring, reporting, and compliance.')}
-        ${chartPanel('affectedBreakdownChart', 'Affected Faculty Breakdown', 'Full-time, part-time, permanent, and contractual faculty reported by institutions.')}
-
-        ${commentsPanel()}
-      `;
-
-      createDoughnut('regionChart', summary.byRegion);
-      createDoughnut('institutionTypeChart', summary.byInstitutionType);
-
-      createBar('familiarityChart', summary.facultyFamiliarity);
-      createBar('awarenessChart', summary.facultyAwareness);
-      createBar('preparednessChart', summary.institutionalPreparedness);
-      createBar('engagementChart', summary.facultyEngagement);
-
-      createBar('curriculumOutcomeRatingChart', summary.curriculumOutcomeRating);
-      createBar('unitReductionRatingChart', summary.unitReductionRating);
-      createBar('proposedCoursesRatingChart', summary.proposedCoursesRating);
-      createBar('facultyQualificationsRatingChart', summary.facultyQualificationsRating);
-      createBar('qaProcessRatingChart', summary.qaProcessRating);
-
-      createAffectedChart('affectedBreakdownChart', summary.affectedFaculty);
-
-      renderComments('openComments');
-    }
-
-    function chartPanel(id, title, description) {
-      return `
-        <div class="panel">
-          <h2>${title}</h2>
-          <p>${description}</p>
-          <div class="chart-wrap">
-            <canvas id="${id}"></canvas>
-          </div>
-        </div>
-      `;
-    }
-
-    function commentsPanel() {
-      const options = Object.keys(commentCategories)
-        .map(key => `<option value="${key}">${commentCategories[key]}</option>`)
-        .join('');
-
-      return `
-        <div class="panel large">
-          <h2>Comments and Recommendation Summaries</h2>
-          <p>Select a category to review submitted comments and recommendations from the survey data.</p>
-
-          <div class="comment-controls">
-            <select id="commentCategory" onchange="renderComments(this.value)">
-              ${options}
-            </select>
-          </div>
-
-          <div id="commentsBox" class="comments-box"></div>
-        </div>
-      `;
-    }
-
-    function tablePanel() {
-      return `
-        <div class="panel large">
-          <h2>Live Response Database</h2>
-          <p>Filtered response records based on selected region, institution type, position, and institution search.</p>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Institution</th>
-                  <th>Type</th>
-                  <th>Region</th>
-                  <th>Position</th>
-                  <th>Familiarity</th>
-                  <th>Awareness</th>
-                  <th>Preparedness</th>
-                  <th>Engagement</th>
-                  <th>Affected Faculty</th>
-                  <th>Full-time</th>
-                  <th>Part-time</th>
-                  <th>Permanent</th>
-                  <th>Contractual</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${filteredRecords.map((r, index) => `
-                  <tr>
-                    <td>${index + 1}</td>
-                    <td>${escapeHtml(r.institution)}</td>
-                    <td>${escapeHtml(r.institutionType)}</td>
-                    <td>${escapeHtml(r.region)}</td>
-                    <td>${escapeHtml(r.respondentPosition)}</td>
-                    <td>${escapeHtml(r.facultyFamiliarity)}</td>
-                    <td>${escapeHtml(r.facultyAwareness)}</td>
-                    <td>${escapeHtml(r.institutionalPreparedness)}</td>
-                    <td>${escapeHtml(r.facultyEngagement)}</td>
-                    <td>${number(r.affectedFacultyTotal)}</td>
-                    <td>${number(r.affectedFullTime)}</td>
-                    <td>${number(r.affectedPartTime)}</td>
-                    <td>${number(r.affectedPermanent)}</td>
-                    <td>${number(r.affectedContractual)}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderComments(categoryKey) {
-      const box = document.getElementById('commentsBox');
-      if (!box) return;
-
-      const field = mapCommentKeyToRecordField(categoryKey);
-
-      const items = filteredRecords
-        .map(r => r[field])
-        .filter(v => v && String(v).trim() !== '');
-
-      if (!items.length) {
-        box.innerHTML = `<div class="empty">No submitted comment for this category based on the current filter.</div>`;
-        return;
-      }
-
-      box.innerHTML = items.map(item => `
-        <div class="comment-item">${escapeHtml(item)}</div>
-      `).join('');
-    }
-
-    function mapCommentKeyToRecordField(key) {
-      const map = {
-        openComments: 'openComment',
-        curriculumOutcomes: 'curriculumOutcomeComment',
-        unitReduction: 'unitReductionComment',
-        proposedCourses: 'proposedCoursesComment',
-        facultyQualifications: 'facultyQualificationsComment',
-        qaProcess: 'qaProcessComment',
-        implementationChallenges: 'implementationChallenges',
-        supportFromCHED: 'supportFromCHED',
-        institutionSupportForFaculty: 'institutionSupportForFaculty',
-        expectedCHEDSupportAffectedFaculty: 'expectedCHEDSupportAffectedFaculty',
-        implementationSupportMechanisms: 'implementationSupportMechanisms',
-        otherRecommendations: 'otherRecommendations'
-      };
-
-      return map[key] || 'openComment';
-    }
-
-    function buildClientSummary(records) {
-      return {
-        totalResponses: records.length,
-        institutions: new Set(records.map(r => r.institution).filter(Boolean)).size,
-        regions: new Set(records.map(r => r.region).filter(Boolean)).size,
-
-        byRegion: countBy(records, 'region'),
-        byInstitutionType: countBy(records, 'institutionType'),
-        byRespondentPosition: countBy(records, 'respondentPosition'),
-
-        facultyFamiliarity: countBy(records, 'facultyFamiliarity'),
-        facultyAwareness: countBy(records, 'facultyAwareness'),
-        institutionalPreparedness: countBy(records, 'institutionalPreparedness'),
-        facultyEngagement: countBy(records, 'facultyEngagement'),
-
-        curriculumOutcomeRating: countBy(records, 'curriculumOutcomeRating'),
-        unitReductionRating: countBy(records, 'unitReductionRating'),
-        proposedCoursesRating: countBy(records, 'proposedCoursesRating'),
-        facultyQualificationsRating: countBy(records, 'facultyQualificationsRating'),
-        qaProcessRating: countBy(records, 'qaProcessRating'),
-
-        affectedFaculty: {
-          totalDeclaredAffected: sum(records, 'affectedFacultyTotal'),
-          fullTime: sum(records, 'affectedFullTime'),
-          partTime: sum(records, 'affectedPartTime'),
-          permanent: sum(records, 'affectedPermanent'),
-          contractual: sum(records, 'affectedContractual')
+          initializeDashboard(data);
+        } catch (error) {
+          showError(error.message);
+        } finally {
+          cleanupJsonp(callbackName);
         }
       };
+
+      const script = document.createElement("script");
+      script.id = callbackName;
+      script.src = WEB_APP_URL + "?mode=data&callback=" + callbackName;
+
+      script.onerror = function () {
+        showError("Failed to load Apps Script data. Please check deployment access and Web App URL.");
+        cleanupJsonp(callbackName);
+      };
+
+      document.body.appendChild(script);
     }
 
-    function countBy(records, key) {
-      const map = {};
+    function cleanupJsonp(callbackName) {
+      delete window[callbackName];
 
-      records.forEach(r => {
-        const value = r[key] || 'No response';
-        map[value] = (map[value] || 0) + 1;
+      const oldScript = document.getElementById(callbackName);
+      if (oldScript) oldScript.remove();
+    }
+
+    function initializeDashboard(data) {
+      document.getElementById("loadingBox").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+
+      document.getElementById("statusText").textContent =
+        "Dashboard loaded successfully.";
+
+      document.getElementById("totalResponses").textContent =
+        formatNumber(data.totalResponses || 0);
+
+      document.getElementById("totalInstitutions").textContent =
+        formatNumber(data.totalInstitutions || 0);
+
+      document.getElementById("totalRegions").textContent =
+        formatNumber(data.totalRegions || 0);
+
+      const overallAverage = calculateOverallAverage(data.ratings || {});
+      document.getElementById("overallAverage").textContent = overallAverage;
+
+      renderCharts(data);
+      renderRatingTable(data.ratings || {});
+      renderRegionTable(data.charts && data.charts.regionCounts ? data.charts.regionCounts : {});
+      renderComments(data.comments || {});
+    }
+
+    function renderCharts(data) {
+      const chartData = data.charts || {};
+
+      createBarChart("regionChart", chartData.regionCounts || {}, {
+        horizontal: false,
+        showLegend: false
       });
 
-      return Object.keys(map)
-        .sort((a, b) => String(a).localeCompare(String(b)))
-        .map(name => ({
-          name,
-          value: map[name]
-        }));
+      createDoughnutChart("institutionTypeChart", chartData.institutionTypeCounts || {});
+      createDoughnutChart("familiarityChart", chartData.familiarityCounts || {});
+      createDoughnutChart("awarenessChart", chartData.awarenessCounts || {});
+      createDoughnutChart("preparednessChart", chartData.preparednessCounts || {});
+      createDoughnutChart("engagementChart", chartData.engagementCounts || {});
+      createBarChart("positionChart", chartData.respondentPositionCounts || {}, {
+        horizontal: true,
+        showLegend: false
+      });
+      createBarChart("challengeChart", chartData.challengeCounts || {}, {
+        horizontal: true,
+        showLegend: false
+      });
+      createBarChart("supportChart", chartData.supportCounts || {}, {
+        horizontal: true,
+        showLegend: false
+      });
+      createDoughnutChart("affectedWorkerChart", chartData.affectedWorkerCounts || {});
+      createDoughnutChart("employmentTypeChart", chartData.employmentTypeCounts || {});
     }
 
-    function sum(records, key) {
-      return records.reduce((total, r) => total + Number(r[key] || 0), 0);
-    }
+    function createBarChart(canvasId, obj, options) {
+      const labels = Object.keys(obj);
+      const values = Object.values(obj);
 
-    function createDoughnut(id, data) {
-      const ctx = document.getElementById(id);
+      const ctx = document.getElementById(canvasId);
       if (!ctx) return;
 
-      const colors = getChartColors();
+      if (charts[canvasId]) charts[canvasId].destroy();
 
-      charts.push(new Chart(ctx, {
-        type: 'doughnut',
+      const horizontal = options && options.horizontal;
+
+      charts[canvasId] = new Chart(ctx, {
+        type: "bar",
         data: {
-          labels: data.map(d => d.name),
+          labels: labels,
           datasets: [{
-            data: data.map(d => d.value),
-            backgroundColor: data.map((_, i) => colors.palette[i % colors.palette.length]),
-            borderColor: colors.border,
-            borderWidth: 3,
-            hoverOffset: 8
-          }]
-        },
-        options: chartOptions()
-      }));
-    }
-
-    function createBar(id, data) {
-      const ctx = document.getElementById(id);
-      if (!ctx) return;
-
-      const colors = getChartColors();
-
-      charts.push(new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: data.map(d => d.name),
-          datasets: [{
-            label: 'Responses',
-            data: data.map(d => d.value),
-            backgroundColor: data.map((_, i) => colors.palette[i % colors.palette.length]),
-            borderColor: data.map((_, i) => colors.palette[i % colors.palette.length]),
+            label: "Total",
+            data: values,
+            backgroundColor: labels.map((_, i) => chartColors[i % chartColors.length]),
             borderWidth: 1,
             borderRadius: 8
           }]
         },
         options: {
-          ...chartOptions(),
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: colors.grid
-              },
-              ticks: {
-                precision: 0,
-                color: colors.text
+          indexAxis: horizontal ? "y" : "x",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: options && options.showLegend ? true : false,
+              labels: {
+                color: getTextColor()
               }
             },
-            x: {
-              grid: {
-                display: false
-              },
-              ticks: {
-                color: colors.text,
-                autoSkip: false,
-                maxRotation: 45,
-                minRotation: 0
-              }
-            }
-          }
-        }
-      }));
-    }
-
-    function createAffectedChart(id, affected) {
-      const data = [
-        { name: 'Full-time', value: affected.fullTime },
-        { name: 'Part-time', value: affected.partTime },
-        { name: 'Permanent', value: affected.permanent },
-        { name: 'Contractual', value: affected.contractual }
-      ];
-
-      createDoughnut(id, data);
-    }
-
-    function chartOptions() {
-      const colors = getChartColors();
-
-      return {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              color: colors.text,
-              boxWidth: 14,
-              padding: 16,
-              font: {
-                size: 12,
-                weight: '600'
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return "Total: " + context.parsed.y || context.parsed.x;
+                }
               }
             }
           },
-          tooltip: {
-            backgroundColor: colors.tooltipBg,
-            titleColor: colors.tooltipTitle,
-            bodyColor: colors.tooltipBody,
-            borderColor: colors.tooltipBorder,
-            borderWidth: 1,
-            padding: 12,
-            callbacks: {
-              label: function(context) {
-                const label = context.label || context.dataset.label || '';
-                const value = context.raw || 0;
-                return `${label}: ${value}`;
+          scales: {
+            x: {
+              ticks: {
+                color: getTextColor(),
+                autoSkip: false,
+                maxRotation: horizontal ? 0 : 60,
+                minRotation: horizontal ? 0 : 45
+              },
+              grid: {
+                color: getGridColor()
+              }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: getTextColor(),
+                precision: 0
+              },
+              grid: {
+                color: getGridColor()
               }
             }
           }
         }
-      };
+      });
     }
 
-    function destroyCharts() {
-      charts.forEach(chart => chart.destroy());
-      charts = [];
+    function createDoughnutChart(canvasId, obj) {
+      const labels = Object.keys(obj);
+      const values = Object.values(obj);
+
+      const ctx = document.getElementById(canvasId);
+      if (!ctx) return;
+
+      if (charts[canvasId]) charts[canvasId].destroy();
+
+      charts[canvasId] = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: labels.map((_, i) => chartColors[i % chartColors.length]),
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "58%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                color: getTextColor(),
+                boxWidth: 14,
+                font: {
+                  size: 12
+                }
+              }
+            }
+          }
+        }
+      });
     }
 
-    function toggleDarkMode(event) {
-      document.body.classList.toggle('dark');
+    function renderRatingTable(ratings) {
+      const tbody = document.getElementById("ratingTable");
 
-      const button = event.target;
+      const rows = [
+        ["GE Curriculum Outcomes", ratings.curriculumOutcomes],
+        ["Reduction of Units from 36 to 18", ratings.unitReduction],
+        ["Proposed Set of GE Courses", ratings.proposedCourses],
+        ["Faculty Qualifications", ratings.facultyQualifications],
+        ["Quality Assurance Process", ratings.qualityAssurance]
+      ];
 
-      if (document.body.classList.contains('dark')) {
-        button.textContent = 'Day Mode';
-      } else {
-        button.textContent = 'Night Mode';
-      }
+      tbody.innerHTML = rows.map(([label, item]) => {
+        item = item || {};
 
-      renderDashboard();
+        return `
+          <tr>
+            <td><strong>${escapeHtml(label)}</strong></td>
+            <td>${formatRating(item.average)}</td>
+            <td>${formatRating(item.min)}</td>
+            <td>${formatRating(item.max)}</td>
+            <td>${formatNumber(item.count || 0)}</td>
+          </tr>
+        `;
+      }).join("");
     }
 
-    function number(value) {
-      return Number(value || 0).toLocaleString();
+    function renderRegionTable(regionCounts) {
+      const tbody = document.getElementById("regionTable");
+
+      tbody.innerHTML = Object.keys(regionCounts).map(region => {
+        return `
+          <tr>
+            <td><strong>${escapeHtml(region)}</strong></td>
+            <td>${formatNumber(regionCounts[region] || 0)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderComments(comments) {
+      const container = document.getElementById("commentsContainer");
+
+      const groups = [
+        ["GE Curriculum Outcomes", comments.curriculumOutcomes],
+        ["Reduction of Units from 36 to 18 Units", comments.unitReduction],
+        ["Proposed Set of GE Courses", comments.proposedCourses],
+        ["Faculty Qualifications", comments.facultyQualifications],
+        ["Quality Assurance Process", comments.qualityAssurance],
+        ["Open Comments", comments.openComments]
+      ];
+
+      container.innerHTML = groups.map(([title, group]) => {
+        group = group || { count: 0, items: [] };
+
+        const items = group.items || [];
+
+        let listHtml = "";
+
+        if (!items.length) {
+          listHtml = `<p class="empty">No comments submitted for this category.</p>`;
+        } else {
+          listHtml = `
+            <ul class="comment-list">
+              ${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+            </ul>
+          `;
+        }
+
+        return `
+          <details>
+            <summary>${escapeHtml(title)} — ${formatNumber(group.count || 0)} comment/s</summary>
+            ${listHtml}
+          </details>
+        `;
+      }).join("");
+    }
+
+    function calculateOverallAverage(ratings) {
+      const values = Object.values(ratings)
+        .map(item => item && item.average ? Number(item.average) : 0)
+        .filter(num => num > 0);
+
+      if (!values.length) return "0";
+
+      const sum = values.reduce((a, b) => a + b, 0);
+      return (sum / values.length).toFixed(2);
+    }
+
+    function formatNumber(num) {
+      return Number(num || 0).toLocaleString();
+    }
+
+    function formatRating(num) {
+      const value = Number(num || 0);
+      if (!value) return "0";
+      return value.toFixed(2);
+    }
+
+    function showLoading() {
+      document.getElementById("loadingBox").style.display = "block";
+      document.getElementById("errorBox").style.display = "none";
+      document.getElementById("dashboard").style.display = "none";
+    }
+
+    function showError(message) {
+      document.getElementById("loadingBox").style.display = "none";
+
+      const errorBox = document.getElementById("errorBox");
+      errorBox.style.display = "block";
+      errorBox.innerHTML = `
+        <strong>Unable to load dashboard</strong><br>
+        ${escapeHtml(message)}<br><br>
+        Please check your Apps Script deployment access, Web App URL, and Google Sheet tab name.
+      `;
     }
 
     function escapeHtml(value) {
-      return String(value || '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("dashboardTheme", isDark ? "dark" : "light");
+
+      document.querySelector(".theme-btn").textContent =
+        isDark ? "Day Mode" : "Night Mode";
+
+      refreshChartsTheme();
+    }
+
+    function applySavedTheme() {
+      const saved = localStorage.getItem("dashboardTheme");
+
+      if (saved === "dark") {
+        document.body.classList.add("dark");
+        document.querySelector(".theme-btn").textContent = "Day Mode";
+      }
+    }
+
+    function refreshChartsTheme() {
+      Object.values(charts).forEach(chart => {
+        if (!chart) return;
+
+        if (chart.options.plugins && chart.options.plugins.legend) {
+          chart.options.plugins.legend.labels.color = getTextColor();
+        }
+
+        if (chart.options.scales) {
+          Object.keys(chart.options.scales).forEach(axis => {
+            chart.options.scales[axis].ticks.color = getTextColor();
+            chart.options.scales[axis].grid.color = getGridColor();
+          });
+        }
+
+        chart.update();
+      });
+    }
+
+    function getTextColor() {
+      return document.body.classList.contains("dark") ? "#e5edf8" : "#0f172a";
+    }
+
+    function getGridColor() {
+      return document.body.classList.contains("dark")
+        ? "rgba(229, 237, 248, 0.15)"
+        : "rgba(15, 23, 42, 0.10)";
     }
   </script>
 </body>
